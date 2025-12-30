@@ -35,3 +35,4 @@ When a task is done, check the checkbox associated.
 - [x] If the database is not found at launch, create a new fresh one
 - [x] Fix database permission issues in Docker Compose (enhanced fix)
 - [x] Fix database permission issues in Docker Compose (final robust fix)
+- [x] Improve HTTP performances with http2
