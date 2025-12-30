@@ -77,7 +77,7 @@ The easiest way to run the application is using Docker Compose:
 docker compose up -d
 ```
 
-This will pull the image from GHCR and start the application on port 3000. The SQLite database is persisted using a host-bind mount to the `quiz.db` file in the current directory.
+This will pull the image from GHCR and start the application on port 3000. The SQLite database is persisted using a host-bind mount to the `data` directory in the current directory.
 
 ### Manual Docker Build
 
@@ -92,7 +92,7 @@ docker build -t quiz-game .
 ### Run the container
 
 ```bash
-docker run -p 3000:3000 quiz-game
+docker run -p 3000:3000 -v ./data:/app/data quiz-game
 ```
 
 The application will be available at [http://localhost:3000](http://localhost:3000).

@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # database
+/data/
 quiz.db
 *.db
 *.db-journal

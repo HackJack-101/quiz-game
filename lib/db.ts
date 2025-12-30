@@ -1,7 +1,27 @@
 import Database from 'better-sqlite3';
+import fs from 'fs';
 import path from 'path';
 
-const dbPath = process.env.NODE_ENV === 'test' ? ':memory:' : path.join(process.cwd(), 'quiz.db');
+const dbPath = process.env.NODE_ENV === 'test' ? ':memory:' : path.join(process.cwd(), 'data', 'quiz.db');
+
+// Ensure the data directory exists in production
+if (process.env.NODE_ENV !== 'test') {
+  const dataDir = path.dirname(dbPath);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  // Migration from old location
+  const oldDbPath = path.join(process.cwd(), 'quiz.db');
+  if (fs.existsSync(oldDbPath) && !fs.existsSync(dbPath)) {
+    try {
+      fs.copyFileSync(oldDbPath, dbPath);
+    } catch (err) {
+      console.error('Failed to migrate existing quiz.db:', err);
+    }
+  }
+}
+
 const db = new Database(dbPath);
 
 // Enable foreign keys

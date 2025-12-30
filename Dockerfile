@@ -49,9 +49,8 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Ensure the database file can be created and written to by the non-root user
-# The app uses quiz.db in the current working directory
-RUN touch quiz.db && chown nextjs:nodejs quiz.db
+# Ensure the database directory exists and is writable by the non-root user
+RUN mkdir -p data && chown nextjs:nodejs data
 
 USER nextjs
 
