@@ -33,6 +33,9 @@ ENV NODE_ENV production
 # Disable Next.js telemetry during runtime
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Install su-exec for dropping privileges in entrypoint
+RUN apt-get update && apt-get install -y --no-install-recommends su-exec && rm -rf /var/lib/apt/lists/*
+
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 --ingroup nodejs nextjs
@@ -50,15 +53,19 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Ensure the database directory exists and is writable by the non-root user
-# We use 777 permissions to ensure compatibility with various Docker volume configurations
-# Using a VOLUME instruction helps Docker handle permission inheritance for named volumes
+# The entrypoint script will fix permissions at runtime for mounted volumes
 RUN mkdir -p data && \
     chown -R nextjs:nodejs data && \
-    chmod 777 data
+    chmod 755 data
 
 VOLUME /app/data
 
-USER nextjs
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Note: We don't set USER here because the entrypoint needs to run as root
+# to fix volume permissions, then it drops privileges to nextjs user
 
 EXPOSE 3000
 
@@ -70,6 +77,9 @@ ENV HOSTNAME "0.0.0.0"
 # We use node to perform the check to avoid adding extra dependencies like curl
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => res.statusCode === 200 ? process.exit(0) : process.exit(1)).on('error', () => process.exit(1))"
+
+# Use entrypoint to handle permissions and privilege dropping
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # server.js is created by next build from the standalone output
 CMD ["node", "server.js"]

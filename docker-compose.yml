@@ -3,7 +3,8 @@ services:
     image: ghcr.io/hackjack-101/quiz-game:latest
     pull_policy: always
     container_name: quiz-game
-    user: '1001:1001'
+    # Note: We don't set user here because the entrypoint script runs as root
+    # to fix volume permissions, then drops privileges to nextjs (uid 1001)
     ports:
       - '3000:3000'
     volumes:
