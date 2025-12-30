@@ -744,7 +744,7 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleResetGame}
-                      className="py-4 bg-white/5 text-white font-black rounded-2xl border border-white/20 hover:bg-white/10 transition-all uppercase italic"
+                      className="py-4 bg-gradient-to-r from-purple-400 to-violet-500 text-white font-black rounded-2xl shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 uppercase italic"
                     >
                       <RotateCcw size={20} />
                       {t('resetGame')}
