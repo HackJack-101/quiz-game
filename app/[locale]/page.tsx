@@ -50,7 +50,7 @@ export default function Home() {
             href="/master"
             className="block h-full bg-white/10 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-10 border border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
               <Crown size={120} />
             </div>
             <div className="text-center relative z-10">
@@ -77,7 +77,7 @@ export default function Home() {
             href="/play"
             className="block h-full bg-white/10 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-10 border border-white/20 hover:bg-white/15 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
               <Gamepad2 size={120} />
             </div>
             <div className="text-center relative z-10">

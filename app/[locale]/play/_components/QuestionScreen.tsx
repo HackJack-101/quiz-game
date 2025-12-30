@@ -131,7 +131,7 @@ export default function QuestionScreen({
               layoutId={`question-${currentQuestion.id}`}
               className="bg-white/10 backdrop-blur-xl p-8 rounded-[2rem] border border-white/20 shadow-2xl mb-8 relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-4 opacity-5">
+              <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                 <Rocket size={120} />
               </div>
               <h2 className="text-2xl md:text-4xl font-black text-white text-center leading-tight relative z-10">

@@ -38,7 +38,7 @@ export default function HostQuestion({ currentQuestion, questionAnswers, players
       exit={{ x: 20, opacity: 0 }}
       className="bg-white/10 backdrop-blur-lg rounded-[2.5rem] p-6 sm:p-10 border border-white/20 shadow-2xl relative overflow-hidden"
     >
-      <div className="absolute top-0 right-0 p-8 opacity-5">
+      <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
         <Play size={160} />
       </div>
       <h2 className="text-xl sm:text-2xl font-black text-white/50 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">

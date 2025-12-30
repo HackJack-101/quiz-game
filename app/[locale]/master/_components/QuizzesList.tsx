@@ -42,7 +42,7 @@ export default function QuizzesList({ quizzes, onDeleteQuiz }: QuizzesListProps)
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="flex flex-col gap-6">
       <AnimatePresence mode="popLayout">
         {quizzes.map((quiz, index) => (
           <motion.div
@@ -52,9 +52,9 @@ export default function QuizzesList({ quizzes, onDeleteQuiz }: QuizzesListProps)
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ delay: index * 0.05 }}
-            className="group bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:border-yellow-400/30 transition-all flex flex-col justify-between min-h-[220px] relative overflow-hidden"
+            className="group bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-white/10 hover:bg-white/10 hover:border-yellow-400/30 transition-all flex flex-col justify-between relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-yellow-400/10 transition-colors" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-yellow-400/10 transition-colors pointer-events-none" />
 
             <div>
               <div className="flex justify-between items-start mb-4">

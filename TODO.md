@@ -38,3 +38,5 @@ When a task is done, check the checkbox associated.
 - [x] Fix database permission issues in Docker Compose (final robust fix)
 - [x] Improve HTTP performances with http2
 - [x] Fix the "time remaining" color text. The red color when the time is up is not readable.
+- [x] Display vertically the quiz list on the master quiz page
+- [x] Fix responsiveness of the delete button in the quiz list

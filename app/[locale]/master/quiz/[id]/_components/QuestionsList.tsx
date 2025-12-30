@@ -65,7 +65,7 @@ export default function QuestionsList({
             transition={{ delay: index * 0.05 }}
             className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-white/10 hover:bg-white/10 transition-all group relative overflow-hidden"
           >
-            <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
             <div className="flex flex-row items-center gap-4 sm:gap-6">
               <div className="flex flex-col gap-2 shrink-0">
                 <button

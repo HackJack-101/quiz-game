@@ -176,7 +176,7 @@ export default function GameHistoryPage() {
                 <div
                   className={`absolute top-0 left-0 w-1 h-full transition-opacity ${
                     game.status === 'finished' ? 'bg-green-500' : 'bg-blue-500'
-                  } opacity-0 group-hover:opacity-100`}
+                  } opacity-0 group-hover:opacity-100 pointer-events-none`}
                 />
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div className="flex-1">

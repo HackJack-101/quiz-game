@@ -53,7 +53,7 @@ export default function CreateQuizForm({
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden mt-8"
           >
-            <div className="bg-white/10 backdrop-blur-lg rounded-[2.5rem] p-8 sm:p-10 border border-white/20 shadow-2xl relative">
+            <div className="bg-white/10 backdrop-blur-lg rounded-[2.5rem] p-8 sm:p-10 border border-white/20 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-orange-500" />
               <div className="flex items-center justify-between mb-10">
                 <h2 className="text-2xl font-black text-white uppercase tracking-tight italic">{t('newQuiz')}</h2>
