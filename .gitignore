@@ -38,4 +38,15 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# database
+quiz.db
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# IDEs
+.idea/
+.vscode/
+/.output.txt

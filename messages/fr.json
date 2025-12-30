@@ -1,0 +1,360 @@
+{
+  "HomePage": {
+    "title": "🎯 Jeu de Quiz",
+    "description": "Créez et jouez à des quiz interactifs en temps réel !",
+    "quizMaster": {
+      "title": "Maître du Quiz",
+      "description": "Créez des quiz, ajoutez des questions et hébergez des sessions de jeu en direct",
+      "button": "Créer un Quiz"
+    },
+    "player": {
+      "title": "Joueur",
+      "description": "Rejoignez un jeu avec un code PIN et affrontez d'autres joueurs",
+      "button": "Rejoindre le Jeu"
+    },
+    "stats": "Voir les Statistiques Globales 📊",
+    "features": "Découvrir les Fonctionnalités ✨",
+    "footer": "Aucun compte requis • Gratuit • Multijoueur en temps réel"
+  },
+  "MasterDashboard": {
+    "backToHome": "Retour à l'accueil",
+    "title": "Maître du Quiz",
+    "loginDescription": "Entrez votre email pour accéder à vos quiz",
+    "emailPlaceholder": "votre@email.com",
+    "loading": "Chargement...",
+    "continue": "Continuer",
+    "myQuizzes": "👑 Mes Quiz",
+    "logout": "Déconnexion",
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountConfirm": "Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cela supprimera de manière permanente tous vos quiz, questions et l'historique de vos jeux. Cette action est irréversible.",
+    "createNewQuiz": "Créer un nouveau quiz",
+    "viewHistory": "Voir l'historique des jeux",
+    "createTitle": "Créer un nouveau quiz",
+    "titleLabel": "Titre *",
+    "titlePlaceholder": "Mon super quiz",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "De quoi parle ce quiz ?",
+    "timeLimitLabel": "Limite de temps (secondes)",
+    "cancel": "Annuler",
+    "createQuiz": "Créer le Quiz",
+    "edit": "Modifier",
+    "host": "Héberger",
+    "delete": "Supprimer",
+    "noQuizzes": "Aucun quiz trouvé.",
+    "createFirstQuiz": "Créez votre premier quiz pour commencer !",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce quiz ?",
+    "updatedAt": "Mis à jour le {date}",
+    "seconds": "s",
+    "errors": {
+      "enterEmail": "Veuillez entrer votre email",
+      "loginFailed": "Échec de la connexion",
+      "createFailed": "Échec de la création du quiz",
+      "anErrorOccurred": "Une erreur est survenue"
+    }
+  },
+  "QuizEditor": {
+    "backToDashboard": "Retour au tableau de bord",
+    "editQuiz": "Modifier le Quiz",
+    "questions": "Questions",
+    "addQuestion": "Ajouter une question",
+    "saveChanges": "Enregistrer les modifications",
+    "editQuestion": "Modifier la question",
+    "addNewQuestion": "Ajouter une nouvelle question",
+    "editSettings": "Modifier les paramètres du quiz",
+    "startGame": "Lancer le jeu",
+    "titleLabel": "Titre",
+    "descriptionLabel": "Description",
+    "timeLimitLabel": "Temps par question (secondes)",
+    "cancel": "Annuler",
+    "questionLabel": "Question",
+    "questionPlaceholder": "Entrez votre question...",
+    "optionLabel": "Option {index}",
+    "optionPlaceholder": "Option {index}",
+    "optionsHelp": "Options (sélectionnez la bonne)",
+    "correctAnswerNumber": "Réponse correcte (nombre)",
+    "correctAnswerText": "Réponse correcte (correspondance exacte)",
+    "correctAnswerPlaceholderNumber": "Entrez le nombre correct",
+    "correctAnswerPlaceholderText": "Entrez la réponse correcte",
+    "deleteQuestion": "Supprimer la question",
+    "updateQuestion": "Modifier la question",
+    "saveQuestion": "Enregistrer la question",
+    "noQuestions": "Pas encore de questions",
+    "noQuestionsHelp": "Ajoutez votre première question pour commencer !",
+    "questionNumber": "Q{index}",
+    "answerLabel": "✓ Réponse : {answer}",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "notFound": "Quiz non trouvé",
+    "loading": "Chargement...",
+    "errors": {
+      "loadFailed": "Échec du chargement du quiz",
+      "updateFailed": "Échec de la mise à jour du quiz",
+      "saveFailed": "Échec de l'enregistrement de la question",
+      "deleteFailed": "Échec de la suppression de la question"
+    },
+    "questionTypeLabel": "Type de question",
+    "correctAnswerLabel": "Réponse correcte",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette question ?",
+    "questionTypes": {
+      "true_false": "✓/✗ Vrai ou Faux",
+      "mcq": "🔘 Choix Multiple",
+      "multiple_mcq": "🔘🔘 Choix Multiple (Réponses Multiples)",
+      "number": "🔢 Saisie de nombre",
+      "free_text": "📝 Texte libre"
+    },
+    "true": "Vrai",
+    "false": "Faux",
+    "seconds": "s",
+    "perQuestion": "par question",
+    "questionsCount": "questions"
+  },
+  "HostGame": {
+    "title": "Hébergement du Jeu",
+    "pinCode": "Code PIN",
+    "joinAt": "Rejoignez sur",
+    "players": "Joueurs",
+    "startGame": "Commencer le Jeu",
+    "startGameWithCount": "Commencer le Jeu ({count} joueurs)",
+    "nextQuestion": "Question Suivante",
+    "replayRound": "Rejouer le Tour",
+    "resetGame": "Réinitialiser le Jeu",
+    "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser le jeu ? Toute la progression et les scores seront effacés.",
+    "showFirstQuestion": "Afficher la Première Question",
+    "finishGame": "Terminer le Jeu",
+    "timesUp": "Temps écoulé !",
+    "correctAnswer": "Réponse Correcte",
+    "leaderboard": "Classement",
+    "finalLeaderboard": "Classement Final",
+    "endGame": "Quitter",
+    "waitingForPlayers": "En attente des joueurs...",
+    "answered": "Répondu",
+    "results": "Résultats",
+    "questionXofY": "Question {current} sur {total}",
+    "gameStatus": "État du Jeu",
+    "statusWaiting": "⏳ En attente",
+    "statusActive": "🎮 Actif",
+    "statusFinished": "🏁 Terminé",
+    "joinCode": "CODE PIN",
+    "joinInstructions": "Les joueurs peuvent rejoindre via la page d'accueil",
+    "questionProgress": "Progression des Questions",
+    "timeRemaining": "Temps Restant",
+    "currentQuestion": "Question Actuelle",
+    "answers": "Réponses",
+    "answersCount": "Réponses ({current} / {total})",
+    "answerSubmitted": "Réponse envoyée",
+    "answerPrefix": "RÉP :",
+    "answerLabel": "Réponse : {answer}",
+    "gameControls": "Contrôles du Jeu",
+    "backToEditor": "Retour à l'éditeur",
+    "creatingGame": "Création du jeu...",
+    "error": "Erreur",
+    "backToQuiz": "Retour au Quiz",
+    "exitGame": "Quitter le Jeu",
+    "exitConfirm": "Êtes-vous sûr de vouloir quitter le jeu ? La session restera active.",
+    "stay": "Rester",
+    "leave": "Quitter",
+    "correct": "Correct",
+    "score": "Score",
+    "seconds": "s",
+    "true": "Vrai",
+    "false": "Faux",
+    "questionTypes": {
+      "true_false": "Vrai ou Faux",
+      "mcq": "Choix Multiple",
+      "multiple_mcq": "Choix Multiple (Réponses Multiples)",
+      "number": "Saisie de nombre",
+      "free_text": "Texte libre"
+    }
+  },
+  "PlayPage": {
+    "enterPin": "Entrez le Code PIN",
+    "pinPlaceholder": "123456",
+    "pinCode": "Code PIN",
+    "displayName": "Nom d'affichage",
+    "namePlaceholder": "Votre Nom",
+    "joinGame": "Rejoindre le Jeu",
+    "gameNotFound": "Jeu non trouvé ou pas encore commencé",
+    "connecting": "Connexion au jeu...",
+    "welcome": "Bienvenue dans le Jeu !",
+    "welcomeWithName": "Vous y êtes, {name} !",
+    "getReady": "Préparez-vous !",
+    "nextQuestionSoon": "La prochaine question arrive...",
+    "waitingForHost": "Attendez que le Maître du Quiz commence le jeu.",
+    "questionOf": "sur {total}",
+    "numberPlaceholder": "Entrez un nombre...",
+    "textPlaceholder": "Tapez votre réponse...",
+    "true": "Vrai",
+    "false": "Faux",
+    "questionXofY": "Question {current} sur {total}",
+    "timeRemaining": "Temps restant",
+    "submitAnswer": "ENVOYER",
+    "answerSubmitted": "RÉPONSE ENVOYÉE !",
+    "waitingForOthers": "En attente des autres joueurs...",
+    "timesUp": "TEMPS ÉCOULÉ !",
+    "questionFinished": "Question terminée !",
+    "correctAnswerLabel": "RÉPONSE CORRECTE",
+    "correct": "Correct !",
+    "incorrect": "Incorrect",
+    "gameFinished": "PARTIE TERMINÉE",
+    "wellDone": "Bien joué !",
+    "finalScore": "Votre Score",
+    "rank": "Rang #{rank}",
+    "finalLeaderboard": "Classement Final",
+    "leaderboard": "Classement",
+    "you": "(Vous)",
+    "backToHome": "Retour à l'accueil",
+    "exitGame": "Quitter le Jeu ?",
+    "exitConfirm": "Êtes-vous sûr de vouloir quitter le jeu ? Votre progression sera perdue.",
+    "stay": "Rester",
+    "leave": "Quitter",
+    "seconds": "s",
+    "errors": {
+      "submitFailed": "Échec de l'envoi de la réponse"
+    }
+  },
+  "StatsPage": {
+    "title": "Statistiques Globales",
+    "description": "Découvrez l'activité de la communauté !",
+    "totalQuizzes": "Total des Quiz",
+    "totalGames": "Parties Jouées",
+    "totalPlayers": "Total des Joueurs",
+    "totalAnswers": "Réponses Données",
+    "totalCorrectAnswers": "Réponses Correctes",
+    "totalQuestions": "Total des Questions",
+    "totalUsers": "Maîtres du Quiz",
+    "topQuizzes": "Top 5 des Quiz les plus joués",
+    "playCount": "{count} parties",
+    "loading": "Chargement des statistiques...",
+    "error": "Échec du chargement des statistiques",
+    "backToHome": "Retour à l'accueil"
+  },
+  "GameStats": {
+    "title": "Statistiques de la Partie",
+    "totalPlayers": "Total des Joueurs",
+    "averageScore": "Score Moyen",
+    "mostDifficultQuestion": "Question la plus difficile",
+    "easiestQuestion": "Question la plus facile",
+    "questionStats": "Détails par Question",
+    "correctRate": "Taux de réussite",
+    "averageTime": "Temps moyen",
+    "backToGame": "Retour au Classement",
+    "loading": "Chargement des statistiques...",
+    "error": "Échec du chargement des statistiques",
+    "noGameId": "Aucun identifiant de jeu fourni",
+    "noData": "Aucune donnée disponible pour cette partie.",
+    "viewStats": "Voir les Statistiques de la Partie 📊",
+    "playerCount": "{count} joueurs"
+  },
+  "GameHistory": {
+    "title": "Historique des Jeux",
+    "backToDashboard": "Retour au tableau de bord",
+    "noHistory": "Aucun jeu joué pour le moment.",
+    "sessions": "Sessions",
+    "quizTitle": "Quiz",
+    "date": "Date",
+    "players": "Joueurs",
+    "pin": "PIN",
+    "status": "Statut",
+    "statusWaiting": "En attente",
+    "statusActive": "Actif",
+    "statusQuestion": "Question",
+    "statusFinished": "Terminé",
+    "hostGame": "Gérer la partie",
+    "viewStats": "Voir Stats",
+    "resume": "Reprendre",
+    "close": "Fermer",
+    "resumeConfirm": "Êtes-vous sûr de vouloir reprendre cette session ? Les anciens et nouveaux joueurs pourront rejoindre.",
+    "closeConfirm": "Êtes-vous sûr de vouloir fermer cette session ?",
+    "loading": "Chargement de l'historique...",
+    "error": "Échec du chargement de l'historique"
+  },
+  "FeaturesPage": {
+    "title": "Fonctionnalités",
+    "subtitle": "Tout ce dont vous avez besoin pour animer des quiz en direct incroyables",
+    "backToHome": "Retour à l'accueil",
+    "hero": {
+      "title": "La plateforme ultime de quiz en temps réel",
+      "description": "Engagez votre public avec des quiz interactifs et rapides. Pas d'application à télécharger, pas de compte pour les joueurs – juste du plaisir pur."
+    },
+    "sections": {
+      "quizMaster": {
+        "title": "Pour les Maîtres du Quiz",
+        "create": {
+          "title": "Création Facile",
+          "description": "Créez des quiz avec différents types de questions en quelques minutes. Organisez-les facilement dans votre tableau de bord."
+        },
+        "host": {
+          "title": "Hébergement en Direct",
+          "description": "Contrôlez le flux du jeu en temps réel. Décidez quand commencer, passer à la question suivante ou rejouer un tour."
+        },
+        "stats": {
+          "title": "Analyses Approfondies",
+          "description": "Accédez à l'historique détaillé des jeux et aux statistiques de performance pour chaque session et chaque joueur."
+        }
+      },
+      "players": {
+        "title": "Pour les Joueurs",
+        "join": {
+          "title": "Rejoint Instantanément",
+          "description": "Les joueurs rejoignent instantanément en entrant un code PIN à 6 chiffres. Aucune inscription requise."
+        },
+        "experience": {
+          "title": "Expérience Fluide",
+          "description": "Interface rapide et réactive conçue pour les appareils mobiles et les tablettes."
+        },
+        "feedback": {
+          "title": "Résultats en Temps Réel",
+          "description": "Obtenez un retour instantané sur vos réponses et voyez votre position dans le classement."
+        }
+      },
+      "questions": {
+        "title": "Types de Questions",
+        "description": "Cinq types de questions uniques pour garder les choses intéressantes",
+        "mcq": "Choix Multiple",
+        "multipleMcq": "MCQ à Réponses Multiples",
+        "trueFalse": "Vrai ou Faux",
+        "number": "Le nombre le plus proche gagne",
+        "freeText": "Correspondance de texte exacte"
+      },
+      "technical": {
+        "title": "Excellence Technique",
+        "realtime": "Propulsé par une technologie en temps réel pour une latence nulle.",
+        "responsive": "Parfait sur n'importe quelle taille d'écran, du téléphone au bureau.",
+        "i18n": "Disponible en plusieurs langues."
+      }
+    }
+  },
+  "Common": {
+    "loading": "Chargement..."
+  },
+  "DemoQuiz": {
+    "title": "Quiz de Démo 🚀",
+    "description": "Bienvenue ! Ce quiz vous fera découvrir tous les types de questions disponibles. C'est très facile !",
+    "questions": {
+      "true_false": {
+        "text": "Cette application s'appelle-t-elle 'Jeu de Quiz' ?",
+        "answer": "true"
+      },
+      "mcq": {
+        "text": "Combien font 1 + 1 ?",
+        "options": ["1", "2", "3", "4"],
+        "answer": "2"
+      },
+      "multiple_mcq": {
+        "text": "Lesquelles de ces couleurs sont des couleurs primaires ?",
+        "options": ["Rouge", "Bleu", "Vert", "Jaune"],
+        "answer": "[\"Rouge\", \"Bleu\", \"Jaune\"]"
+      },
+      "number": {
+        "text": "Combien de pattes a normalement un chien ?",
+        "answer": "4"
+      },
+      "free_text": {
+        "text": "Tapez le mot 'QUIZ' dans la case ci-dessous.",
+        "answer": "QUIZ"
+      }
+    }
+  }
+}

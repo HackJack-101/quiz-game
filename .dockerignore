@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.idea
+quiz.db
+quiz.db-journal
+coverage
+__tests__
+npm-debug.log
+Dockerfile
+.dockerignore

@@ -1,0 +1,360 @@
+{
+  "HomePage": {
+    "title": "🎯 Quiz Game",
+    "description": "Create and play interactive quizzes in real-time!",
+    "quizMaster": {
+      "title": "Quiz Master",
+      "description": "Create quizzes, add questions, and host live game sessions",
+      "button": "Create Quiz"
+    },
+    "player": {
+      "title": "Player",
+      "description": "Join a game with a PIN code and compete with others",
+      "button": "Join Game"
+    },
+    "stats": "View Global Statistics 📊",
+    "features": "Discover Features ✨",
+    "footer": "No account needed • Free to play • Real-time multiplayer"
+  },
+  "MasterDashboard": {
+    "backToHome": "Back to Home",
+    "title": "Quiz Master",
+    "loginDescription": "Enter your email to access your quizzes",
+    "emailPlaceholder": "your@email.com",
+    "loading": "Loading...",
+    "continue": "Continue",
+    "myQuizzes": "👑 My Quizzes",
+    "logout": "Logout",
+    "deleteAccount": "Delete Account",
+    "deleteAccountConfirm": "Are you sure you want to fully delete your account? This will permanently remove all your quizzes, questions, and game history. This action cannot be undone.",
+    "createNewQuiz": "Create New Quiz",
+    "viewHistory": "View Game History",
+    "createTitle": "Create New Quiz",
+    "titleLabel": "Title *",
+    "titlePlaceholder": "My Awesome Quiz",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "What is this quiz about?",
+    "timeLimitLabel": "Time Limit (seconds)",
+    "cancel": "Cancel",
+    "createQuiz": "Create Quiz",
+    "edit": "Edit",
+    "host": "Host",
+    "delete": "Delete",
+    "noQuizzes": "No quizzes found.",
+    "createFirstQuiz": "Create your first quiz to get started!",
+    "deleteConfirm": "Are you sure you want to delete this quiz?",
+    "updatedAt": "Updated {date}",
+    "seconds": "s",
+    "errors": {
+      "enterEmail": "Please enter your email",
+      "loginFailed": "Failed to login",
+      "createFailed": "Failed to create quiz",
+      "anErrorOccurred": "An error occurred"
+    }
+  },
+  "QuizEditor": {
+    "backToDashboard": "Back to Dashboard",
+    "editQuiz": "Edit Quiz",
+    "questions": "Questions",
+    "addQuestion": "Add Question",
+    "saveChanges": "Save Changes",
+    "editQuestion": "Edit Question",
+    "addNewQuestion": "Add New Question",
+    "editSettings": "Edit Quiz Settings",
+    "startGame": "Start Game",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "timeLimitLabel": "Time per question (seconds)",
+    "cancel": "Cancel",
+    "questionLabel": "Question",
+    "questionPlaceholder": "Enter your question...",
+    "optionLabel": "Option {index}",
+    "optionPlaceholder": "Option {index}",
+    "optionsHelp": "Options (select the correct one)",
+    "correctAnswerNumber": "Correct Answer (number)",
+    "correctAnswerText": "Correct Answer (exact match)",
+    "correctAnswerPlaceholderNumber": "Enter the correct number",
+    "correctAnswerPlaceholderText": "Enter the correct answer",
+    "deleteQuestion": "Delete Question",
+    "updateQuestion": "Update Question",
+    "saveQuestion": "Save Question",
+    "noQuestions": "No questions yet",
+    "noQuestionsHelp": "Add your first question to get started!",
+    "questionNumber": "Q{index}",
+    "answerLabel": "✓ Answer: {answer}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
+    "notFound": "Quiz not found",
+    "loading": "Loading...",
+    "errors": {
+      "loadFailed": "Failed to load quiz",
+      "updateFailed": "Failed to update quiz",
+      "saveFailed": "Failed to save question",
+      "deleteFailed": "Failed to delete question"
+    },
+    "questionTypeLabel": "Question Type",
+    "correctAnswerLabel": "Correct Answer",
+    "deleteConfirm": "Are you sure you want to delete this question?",
+    "questionTypes": {
+      "true_false": "✓/✗ True or False",
+      "mcq": "🔘 Multiple Choice",
+      "multiple_mcq": "🔘🔘 Multiple Choice (Multiple Correct)",
+      "number": "🔢 Number Input",
+      "free_text": "📝 Free Text"
+    },
+    "true": "True",
+    "false": "False",
+    "seconds": "s",
+    "perQuestion": "per question",
+    "questionsCount": "questions"
+  },
+  "HostGame": {
+    "title": "Game Hosting",
+    "pinCode": "PIN Code",
+    "joinAt": "Join at",
+    "players": "Players",
+    "startGame": "Start Game",
+    "startGameWithCount": "Start Game ({count} players)",
+    "nextQuestion": "Next Question",
+    "replayRound": "Replay Round",
+    "resetGame": "Reset Game",
+    "resetConfirm": "Are you sure you want to reset the game? All progress and scores will be cleared.",
+    "showFirstQuestion": "Show First Question",
+    "finishGame": "Finish Game",
+    "timesUp": "Time's Up!",
+    "correctAnswer": "Correct Answer",
+    "leaderboard": "Leaderboard",
+    "finalLeaderboard": "Final Leaderboard",
+    "endGame": "End Game",
+    "waitingForPlayers": "Waiting for players to join...",
+    "answered": "Answered",
+    "results": "Results",
+    "questionXofY": "Question {current} of {total}",
+    "gameStatus": "Game Status",
+    "statusWaiting": "⏳ Waiting",
+    "statusActive": "🎮 Active",
+    "statusFinished": "🏁 Finished",
+    "joinCode": "JOIN CODE",
+    "joinInstructions": "Players can join at the home page",
+    "questionProgress": "Question Progress",
+    "timeRemaining": "Time Remaining",
+    "currentQuestion": "Current Question",
+    "answers": "Answers",
+    "answersCount": "Answers ({current} / {total})",
+    "answerSubmitted": "Answer submitted",
+    "answerPrefix": "ANS:",
+    "answerLabel": "Answer: {answer}",
+    "gameControls": "Game Controls",
+    "backToEditor": "Back to Quiz Editor",
+    "creatingGame": "Creating game...",
+    "error": "Error",
+    "backToQuiz": "Back to Quiz",
+    "exitGame": "Exit Game",
+    "exitConfirm": "Are you sure you want to exit the game? The session will remain active.",
+    "stay": "Stay",
+    "leave": "Leave",
+    "correct": "Correct",
+    "score": "Score",
+    "seconds": "s",
+    "true": "True",
+    "false": "False",
+    "questionTypes": {
+      "true_false": "True or False",
+      "mcq": "Multiple Choice",
+      "multiple_mcq": "Multiple Choice (Multiple Correct)",
+      "number": "Number Input",
+      "free_text": "Free Text"
+    }
+  },
+  "PlayPage": {
+    "enterPin": "Enter PIN Code",
+    "pinPlaceholder": "123456",
+    "pinCode": "PIN Code",
+    "displayName": "Display Name",
+    "namePlaceholder": "Your Name",
+    "joinGame": "Join Game",
+    "gameNotFound": "Game not found or not in waiting room",
+    "connecting": "Connecting to game...",
+    "welcome": "Welcome to the Game!",
+    "welcomeWithName": "You're in, {name}!",
+    "getReady": "Get Ready!",
+    "nextQuestionSoon": "The next question is coming up...",
+    "waitingForHost": "Wait for the Quiz Master to start the game.",
+    "questionOf": "of {total}",
+    "numberPlaceholder": "Enter a number...",
+    "textPlaceholder": "Type your answer...",
+    "true": "True",
+    "false": "False",
+    "questionXofY": "Question {current} of {total}",
+    "timeRemaining": "Time Left",
+    "submitAnswer": "SEND",
+    "answerSubmitted": "ANSWER SUBMITTED!",
+    "waitingForOthers": "Waiting for other players...",
+    "timesUp": "TIME'S UP!",
+    "questionFinished": "Question finished!",
+    "correctAnswerLabel": "CORRECT ANSWER",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "gameFinished": "GAME OVER",
+    "wellDone": "Well done!",
+    "finalScore": "Your Score",
+    "rank": "Rank #{rank}",
+    "finalLeaderboard": "Final Leaderboard",
+    "leaderboard": "Leaderboard",
+    "you": "(You)",
+    "backToHome": "Back to Home",
+    "exitGame": "Exit Game",
+    "exitConfirm": "Are you sure you want to leave the game? Your progress will be lost.",
+    "stay": "Stay",
+    "leave": "Leave",
+    "seconds": "s",
+    "errors": {
+      "submitFailed": "Failed to submit answer"
+    }
+  },
+  "StatsPage": {
+    "title": "Global Statistics",
+    "description": "See how much the community is playing!",
+    "totalQuizzes": "Total Quizzes",
+    "totalGames": "Games Played",
+    "totalPlayers": "Total Players",
+    "totalAnswers": "Answers Given",
+    "totalCorrectAnswers": "Correct Answers",
+    "totalQuestions": "Total Questions",
+    "totalUsers": "Quiz Masters",
+    "topQuizzes": "Top 5 Most Played Quizzes",
+    "playCount": "{count} plays",
+    "loading": "Loading statistics...",
+    "error": "Failed to load statistics",
+    "backToHome": "Back to Home"
+  },
+  "GameStats": {
+    "title": "Game Statistics",
+    "totalPlayers": "Total Players",
+    "averageScore": "Average Score",
+    "mostDifficultQuestion": "Most Difficult Question",
+    "easiestQuestion": "Easiest Question",
+    "questionStats": "Question Breakdown",
+    "correctRate": "Correct Rate",
+    "averageTime": "Avg. Time",
+    "backToGame": "Back to Leaderboard",
+    "loading": "Loading statistics...",
+    "error": "Failed to load statistics",
+    "noGameId": "No game ID provided",
+    "noData": "No data available for this game.",
+    "viewStats": "View Game Statistics 📊",
+    "playerCount": "{count} players"
+  },
+  "GameHistory": {
+    "title": "Game History",
+    "backToDashboard": "Back to Dashboard",
+    "noHistory": "No games played yet.",
+    "sessions": "Sessions",
+    "quizTitle": "Quiz",
+    "date": "Date",
+    "players": "Players",
+    "pin": "PIN",
+    "status": "Status",
+    "statusWaiting": "Waiting",
+    "statusActive": "Active",
+    "statusQuestion": "Question",
+    "statusFinished": "Finished",
+    "hostGame": "Host Game",
+    "viewStats": "View Stats",
+    "resume": "Resume",
+    "close": "Close",
+    "resumeConfirm": "Are you sure you want to resume this session? New and old players will be able to join.",
+    "closeConfirm": "Are you sure you want to close this session?",
+    "loading": "Loading history...",
+    "error": "Failed to load history"
+  },
+  "FeaturesPage": {
+    "title": "Features",
+    "subtitle": "Everything you need to host amazing live quizzes",
+    "backToHome": "Back to Home",
+    "hero": {
+      "title": "The ultimate real-time quiz platform",
+      "description": "Engage your audience with interactive, fast-paced quizzes. No apps to download, no accounts for players – just pure fun."
+    },
+    "sections": {
+      "quizMaster": {
+        "title": "For Quiz Masters",
+        "create": {
+          "title": "Easy Creation",
+          "description": "Create quizzes with various question types in minutes. Organize them easily in your dashboard."
+        },
+        "host": {
+          "title": "Live Hosting",
+          "description": "Control the game flow in real-time. Decide when to start, move to the next question, or replay a round."
+        },
+        "stats": {
+          "title": "Deep Insights",
+          "description": "Access detailed game history and performance statistics for every session and player."
+        }
+      },
+      "players": {
+        "title": "For Players",
+        "join": {
+          "title": "Instant Join",
+          "description": "Players join instantly by entering a 6-digit PIN. No registration required."
+        },
+        "experience": {
+          "title": "Smooth Experience",
+          "description": "Fast and responsive interface designed for mobile and tablet devices."
+        },
+        "feedback": {
+          "title": "Real-time Results",
+          "description": "Get instant feedback on your answers and see your position on the leaderboard."
+        }
+      },
+      "questions": {
+        "title": "Question Types",
+        "description": "Five unique question types to keep things interesting",
+        "mcq": "Multiple Choice",
+        "multipleMcq": "Multiple Correct MCQ",
+        "trueFalse": "True or False",
+        "number": "Closest Number Wins",
+        "freeText": "Exact Text Match"
+      },
+      "technical": {
+        "title": "Technical Excellence",
+        "realtime": "Powered by real-time technology for zero lag.",
+        "responsive": "Perfect on any screen size, from phone to desktop.",
+        "i18n": "Available in multiple languages."
+      }
+    }
+  },
+  "Common": {
+    "loading": "Loading..."
+  },
+  "DemoQuiz": {
+    "title": "Demo Quiz 🚀",
+    "description": "Welcome! This quiz will show you all the available question types. It's very easy!",
+    "questions": {
+      "true_false": {
+        "text": "Is this application called 'Quiz Game'?",
+        "answer": "true"
+      },
+      "mcq": {
+        "text": "What is 1 + 1?",
+        "options": ["1", "2", "3", "4"],
+        "answer": "2"
+      },
+      "multiple_mcq": {
+        "text": "Which of these are primary colors?",
+        "options": ["Red", "Blue", "Green", "Yellow"],
+        "answer": "[\"Red\", \"Blue\", \"Yellow\"]"
+      },
+      "number": {
+        "text": "How many legs does a typical dog have?",
+        "answer": "4"
+      },
+      "free_text": {
+        "text": "Type the word 'QUIZ' in the box below.",
+        "answer": "QUIZ"
+      }
+    }
+  }
+}
