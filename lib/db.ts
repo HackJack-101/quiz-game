@@ -20,11 +20,26 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
   const oldDbPath = path.join(process.cwd(), 'quiz.db');
   if (fs.existsSync(oldDbPath) && !fs.existsSync(dbPath)) {
     try {
-      fs.copyFileSync(oldDbPath, dbPath);
-      console.log(`Migrated database from ${oldDbPath} to ${dbPath}`);
+      // Check if it's a valid SQLite database before migrating
+      const buffer = Buffer.alloc(16);
+      const fd = fs.openSync(oldDbPath, 'r');
+      fs.readSync(fd, buffer, 0, 16, 0);
+      fs.closeSync(fd);
+
+      if (buffer.toString('utf8', 0, 15) === 'SQLite format 3') {
+        fs.copyFileSync(oldDbPath, dbPath);
+        console.info(`Migrated database from ${oldDbPath} to ${dbPath}`);
+      } else {
+        console.warn(`Skipping migration: ${oldDbPath} is not a valid SQLite database.`);
+      }
     } catch (err) {
       console.error('Failed to migrate existing quiz.db:', err);
     }
+  }
+
+  // If the database is not found at launch, create a new fresh one
+  if (!fs.existsSync(dbPath)) {
+    console.info(`Database not found at ${dbPath}, creating a new fresh one.`);
   }
 }
 
