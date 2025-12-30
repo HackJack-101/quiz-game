@@ -8,8 +8,8 @@
 - Use Tailwind CSS
 - Use TypeScript
 - Define types and interfaces
-- Execute ESLint
-- Execute Prettier
+- Execute ESLint with `npm eslint`
+- Execute Prettier with `npm format:fix`
 - Use Jest
 - Define components
 - Avoid duplicating code
