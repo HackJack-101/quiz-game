@@ -95,19 +95,19 @@ describe('MasterDashboard', () => {
 
     // Wait for the user to be loaded
     await waitFor(() => {
-      expect(screen.getByText('createNewQuiz')).toBeInTheDocument();
+      expect(screen.getByText('createQuiz')).toBeInTheDocument();
     });
 
     // Open new quiz form
-    fireEvent.click(screen.getByText('createNewQuiz'));
+    fireEvent.click(screen.getByText('createQuiz'));
 
     // Fill the form
-    fireEvent.change(screen.getByPlaceholderText('titlePlaceholder'), {
+    fireEvent.change(screen.getByPlaceholderText('quizTitlePlaceholder'), {
       target: { value: 'My New Quiz' },
     });
 
     // Wait for form to appear
-    const createButton = await screen.findByText('createQuiz');
+    const createButton = await screen.findByText('createQuizAction');
 
     // Submit the form
     fireEvent.click(createButton);

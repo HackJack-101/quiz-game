@@ -23,7 +23,7 @@ When a task is done, check the checkbox associated.
 - [x] Create a feature page to present the website for the public
 - [x] Improve free text questions
 - [x] Add a new type of question: multiple choice question with multiple correct responses
-- [ ] Split code into multiple components
+- [x] Split code into multiple components
 - [x] Add an exit action for the page [locale]/master/quiz/[id]/host
 - [x] When the quiz is over, display the results
 - [x] Remove navigation symbols from translations
