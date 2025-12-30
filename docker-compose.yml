@@ -3,7 +3,7 @@ services:
     image: ghcr.io/hackjack-101/quiz-game:latest
     pull_policy: always
     container_name: quiz-game
-    user: "1001:1001"
+    user: '1001:1001'
     ports:
       - '3000:3000'
     volumes:
