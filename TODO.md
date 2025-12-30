@@ -31,3 +31,4 @@ When a task is done, check the checkbox associated.
 - [x] Add options to resume and close a session from the history page
 - [x] Create a demo quiz in the user's language upon account creation
 - [x] Update docker-compose and README with official repo and persistence
+- [x] Force dark theme regardless of system settings
