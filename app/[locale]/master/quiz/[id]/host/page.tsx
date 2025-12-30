@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 
+import { useSocket } from '@/hooks/useSocket';
 import { useRouter } from '@/i18n/routing';
 import { Answer, Game, Player, Question, Quiz } from '@/lib/types';
 
@@ -200,6 +201,24 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
     }
   };
 
+  const handleShowResults = useCallback(async () => {
+    if (!game || game.status !== 'question') return;
+
+    try {
+      const res = await fetch(`/api/games/${game.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'show_results' }),
+      });
+
+      if (res.ok) {
+        await fetchGameState();
+      }
+    } catch (err) {
+      console.error('Failed to show results:', err);
+    }
+  }, [game, fetchGameState]);
+
   const confirmExit = () => {
     router.push(`/master/quiz/${quizId}`);
   };
@@ -256,16 +275,27 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
     initGame();
   }, [quizId, t, gameIdParam, router]);
 
-  // Poll for game updates
+  const { socket } = useSocket(game?.id);
+
+  // Poll for game updates (replaced by WebSocket, but kept a slow fallback if needed)
+  // Actually, let's remove it completely as requested.
   useEffect(() => {
-    if (!game) return;
+    if (!socket || !game?.id) return;
 
-    const interval = setInterval(() => {
+    const handler = () => {
       fetchGameState();
-    }, 2000); // Poll every 2 seconds
+    };
 
-    return () => clearInterval(interval);
-  }, [fetchGameState, game, game?.id]);
+    socket.on('game-state-update', handler);
+    socket.on('player-joined', handler);
+    socket.on('answer-submitted', handler);
+
+    return () => {
+      socket.off('game-state-update', handler);
+      socket.off('player-joined', handler);
+      socket.off('answer-submitted', handler);
+    };
+  }, [socket, game?.id, fetchGameState]);
 
   // Timer for current question
   useEffect(() => {
@@ -278,11 +308,12 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
 
       if (remaining === 0) {
         clearInterval(interval);
+        handleShowResults();
       }
     }, 100);
 
     return () => clearInterval(interval);
-  }, [questionStartTime, quiz, quiz?.time_limit]);
+  }, [questionStartTime, quiz, quiz?.time_limit, handleShowResults]);
 
   if (loading) {
     return (

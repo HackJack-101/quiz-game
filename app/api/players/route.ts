@@ -10,6 +10,7 @@ import {
   getQuizById,
   joinGame,
 } from '@/lib/db-utils';
+import { emitPlayerJoined } from '@/lib/socket-utils';
 
 // POST /api/players - Join a game
 export async function POST(request: NextRequest) {
@@ -41,6 +42,8 @@ export async function POST(request: NextRequest) {
 
     const player = joinGame(game.id, playerName.trim());
     const quiz = getQuizById(game.quiz_id);
+
+    emitPlayerJoined(game.id, player);
 
     return NextResponse.json(
       {
@@ -103,7 +106,7 @@ export async function GET(request: NextRequest) {
             : startStr + 'Z'
           : startStr.replace(' ', 'T') + 'Z';
         const startTime = new Date(normalizedStartStr).getTime();
-        const revealTime = startTime + (timeLimit + 1) * 1000;
+        const revealTime = startTime + timeLimit * 1000;
         isRevealed = Date.now() >= revealTime;
       }
 

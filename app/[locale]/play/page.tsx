@@ -4,8 +4,9 @@ import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useSocket } from '@/hooks/useSocket';
 import { useRouter } from '@/i18n/routing';
 import { Player, PlayerGame, PlayerQuestion, PlayerQuiz } from '@/lib/types';
 
@@ -49,6 +50,8 @@ export default function PlayPage() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  const { socket } = useSocket(game?.id);
+
   // Check for existing player session
   useEffect(() => {
     const savedPlayerId = localStorage.getItem('quiz_player_id');
@@ -58,86 +61,98 @@ export default function PlayPage() {
     }
   }, []);
 
-  // Poll for game state
+  const fetchState = useCallback(async () => {
+    if (!playerId || !joined) return;
+
+    try {
+      const res = await fetch(`/api/players?playerId=${playerId}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          localStorage.removeItem('quiz_player_id');
+          setJoined(false);
+          setPlayerId(null);
+          return;
+        }
+        return;
+      }
+
+      const data = await res.json();
+
+      // Reset answer state if question changed or round replayed
+      if (currentQuestion?.id !== data.currentQuestion?.id || game?.questionStartedAt !== data.game.questionStartedAt) {
+        setSelectedAnswer('');
+        setHasAnswered(false);
+        setAnswerResult(null);
+      }
+
+      setGame(data.game);
+      setQuiz(data.quiz);
+      setPlayer(data.player);
+      setCurrentQuestion(data.currentQuestion);
+      setQuestionNumber(data.questionNumber);
+      setTotalQuestions(data.totalQuestions);
+      setLeaderboard(data.leaderboard);
+
+      if (data.playerAnswer) {
+        setHasAnswered(true);
+        setSelectedAnswer(data.playerAnswer.answer);
+        if (data.playerAnswer.isCorrect !== null) {
+          setAnswerResult({
+            isCorrect: data.playerAnswer.isCorrect,
+            message: data.playerAnswer.isCorrect ? t('correct') : t('incorrect'),
+          });
+        }
+      }
+
+      if (data.game.status === 'question' && data.game.questionStartedAt && data.quiz) {
+        const startStr = data.game.questionStartedAt;
+        const normalizedStartStr = startStr.includes('T')
+          ? startStr.endsWith('Z')
+            ? startStr
+            : startStr + 'Z'
+          : startStr.replace(' ', 'T') + 'Z';
+        const startTime = new Date(normalizedStartStr).getTime();
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const remaining = Math.max(0, data.quiz.timeLimit - elapsed);
+        setTimeRemaining(remaining);
+      }
+    } catch (err) {
+      console.error('Failed to fetch game state:', err);
+    }
+  }, [playerId, joined, currentQuestion?.id, game?.questionStartedAt, t]);
+
+  // Fetch game state initial and on socket event
   useEffect(() => {
     if (!playerId || !joined) return;
 
-    const fetchState = async () => {
-      try {
-        const res = await fetch(`/api/players?playerId=${playerId}`);
-        if (!res.ok) {
-          if (res.status === 404) {
-            localStorage.removeItem('quiz_player_id');
-            setJoined(false);
-            setPlayerId(null);
-            return;
-          }
-          return;
-        }
-
-        const data = await res.json();
-
-        // Reset answer state if question changed or round replayed
-        if (
-          currentQuestion?.id !== data.currentQuestion?.id ||
-          game?.questionStartedAt !== data.game.questionStartedAt
-        ) {
-          setSelectedAnswer('');
-          setHasAnswered(false);
-          setAnswerResult(null);
-        }
-
-        setGame(data.game);
-        setQuiz(data.quiz);
-        setPlayer(data.player);
-        setCurrentQuestion(data.currentQuestion);
-        setQuestionNumber(data.questionNumber);
-        setTotalQuestions(data.totalQuestions);
-        setLeaderboard(data.leaderboard);
-
-        if (data.playerAnswer) {
-          setHasAnswered(true);
-          setSelectedAnswer(data.playerAnswer.answer);
-          if (data.playerAnswer.isCorrect !== null) {
-            setAnswerResult({
-              isCorrect: data.playerAnswer.isCorrect,
-              message: data.playerAnswer.isCorrect ? t('correct') : t('incorrect'),
-            });
-          }
-        }
-
-        if (data.game.status === 'question' && data.game.questionStartedAt && data.quiz) {
-          const startStr = data.game.questionStartedAt;
-          const normalizedStartStr = startStr.includes('T')
-            ? startStr.endsWith('Z')
-              ? startStr
-              : startStr + 'Z'
-            : startStr.replace(' ', 'T') + 'Z';
-          const startTime = new Date(normalizedStartStr).getTime();
-          const elapsed = Math.floor((Date.now() - startTime) / 1000);
-          const remaining = Math.max(0, data.quiz.timeLimit - elapsed);
-          setTimeRemaining(remaining);
-        }
-      } catch (err) {
-        console.error('Failed to fetch game state:', err);
-      }
-    };
-
     fetchState();
-    const interval = setInterval(fetchState, 2000);
-    return () => clearInterval(interval);
-  }, [playerId, joined, currentQuestion?.id, game?.questionStartedAt, t]);
+
+    if (socket) {
+      socket.on('game-state-update', fetchState);
+      return () => {
+        socket.off('game-state-update', fetchState);
+      };
+    }
+  }, [playerId, joined, socket, fetchState]);
 
   // Timer countdown
   useEffect(() => {
-    if (game?.status !== 'question' || timeRemaining <= 0) return;
+    if (game?.status !== 'question' || timeRemaining < 0) return;
+
+    if (timeRemaining === 0) {
+      // Small delay to ensure server-side reveal time is reached
+      const timeout = setTimeout(() => {
+        fetchState();
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [game?.status, timeRemaining]);
+  }, [game?.status, timeRemaining, fetchState]);
 
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();

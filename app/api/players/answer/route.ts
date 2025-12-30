@@ -8,6 +8,7 @@ import {
   hasPlayerAnswered,
   submitAnswer,
 } from '@/lib/db-utils';
+import { emitAnswerSubmitted } from '@/lib/socket-utils';
 
 // POST /api/players/answer - Submit an answer
 export async function POST(request: NextRequest) {
@@ -58,6 +59,8 @@ export async function POST(request: NextRequest) {
     // Submit the answer
     const answerRecord = submitAnswer(playerIdNum, questionIdNum, String(answer), responseTime);
 
+    emitAnswerSubmitted(game.id, answerRecord);
+
     // Get updated player score
     const updatedPlayer = getPlayerById(playerIdNum);
 
@@ -73,7 +76,7 @@ export async function POST(request: NextRequest) {
           : startStr + 'Z'
         : startStr.replace(' ', 'T') + 'Z';
       const startTime = new Date(normalizedStartStr).getTime();
-      const revealTime = startTime + (timeLimit + 1) * 1000;
+      const revealTime = startTime + timeLimit * 1000;
       isRevealed = Date.now() >= revealTime;
     }
 

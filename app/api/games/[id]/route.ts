@@ -14,6 +14,7 @@ import {
   startNextQuestion,
   updateGameStatus,
 } from '@/lib/db-utils';
+import { emitGameStateUpdate } from '@/lib/socket-utils';
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -55,7 +56,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             : startStr + 'Z'
           : startStr.replace(' ', 'T') + 'Z';
         const startTime = new Date(normalizedStartStr).getTime();
-        const revealTime = startTime + (timeLimit + 1) * 1000;
+        const revealTime = startTime + timeLimit * 1000;
         isRevealed = Date.now() >= revealTime;
       }
 
@@ -129,6 +130,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           return NextResponse.json({ error: 'Game has already started' }, { status: 400 });
         }
         const updatedGame = updateGameStatus(gameId, 'active');
+        emitGameStateUpdate(gameId);
         return NextResponse.json(updatedGame);
       }
 
@@ -147,6 +149,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         if (game.current_question_index >= questions.length - 1) {
           // No more questions, finish the game
           const finishedGame = finishGame(gameId);
+          emitGameStateUpdate(gameId);
           return NextResponse.json({
             ...finishedGame,
             message: 'Game finished - no more questions',
@@ -154,6 +157,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         }
 
         const updatedGame = startNextQuestion(gameId);
+        emitGameStateUpdate(gameId);
         const newQuestion = questions[updatedGame!.current_question_index];
 
         return NextResponse.json({
@@ -180,6 +184,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         const answers = getAnswersByQuestionId(currentQ.id, gameId);
         const players = getPlayersByGameId(gameId);
 
+        emitGameStateUpdate(gameId);
         return NextResponse.json({
           question: {
             ...currentQ,
@@ -204,6 +209,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         // End the game
         const finishedGame = finishGame(gameId);
         const players = getPlayersByGameId(gameId);
+        emitGameStateUpdate(gameId);
 
         return NextResponse.json({
           game: finishedGame,
@@ -218,6 +224,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           return NextResponse.json({ error: 'Failed to replay round' }, { status: 400 });
         }
 
+        emitGameStateUpdate(gameId);
         const questions = getQuestionsByQuizId(updatedGame.quiz_id);
         const newQuestion = questions[updatedGame.current_question_index];
 
@@ -240,6 +247,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         }
 
         const { game: updatedGame, finished } = result;
+        emitGameStateUpdate(gameId);
 
         if (finished) {
           const players = getPlayersByGameId(gameId);
@@ -271,6 +279,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           return NextResponse.json({ error: 'Failed to reset game' }, { status: 400 });
         }
 
+        emitGameStateUpdate(gameId);
         return NextResponse.json(updatedGame);
       }
 
@@ -280,6 +289,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         if (!updatedGame) {
           return NextResponse.json({ error: 'Failed to resume game' }, { status: 400 });
         }
+        emitGameStateUpdate(gameId);
         return NextResponse.json(updatedGame);
       }
 

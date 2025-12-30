@@ -44,3 +44,4 @@ When a task is done, check the checkbox associated.
 - [x] Change the position of the send button on number and exact text question to be below the input field for better vertical responsiveness
 - [x] Support Enter key to submit answers for number and free text questions
 - [x] Fix the npm run build
+- [x] Use websocket to communicate instead of recurrent http calls during a game

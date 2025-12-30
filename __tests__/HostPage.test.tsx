@@ -26,6 +26,18 @@ jest.mock('../i18n/routing', () => ({
   useRouter: jest.fn(),
 }));
 
+// Mock useSocket
+jest.mock('../hooks/useSocket', () => ({
+  useSocket: jest.fn(() => ({
+    socket: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn(),
+    },
+    connected: true,
+  })),
+}));
+
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
   motion: {

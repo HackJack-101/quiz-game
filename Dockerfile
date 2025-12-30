@@ -51,6 +51,7 @@ RUN chown nextjs:nodejs .next
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/custom-server.js ./custom-server.js
 
 # Ensure the database directory exists and is writable by the non-root user
 # The entrypoint script will fix permissions at runtime for mounted volumes
@@ -81,5 +82,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Use entrypoint to handle permissions and privilege dropping
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-# server.js is created by next build from the standalone output
-CMD ["node", "server.js"]
+# custom-server.js is used to add Socket.IO support to the standalone output
+CMD ["node", "custom-server.js"]

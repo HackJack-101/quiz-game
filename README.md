@@ -37,6 +37,7 @@ A real-time, interactive quiz game application built with Next.js, TypeScript, a
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion & Canvas Confetti
 - **Icons**: Lucide React
+- **Real-time**: WebSockets (Socket.IO) for instant game state updates
 - **Responsiveness**: Optimized for mobile (iPhone 13 mini) and tablets (iPad 11")
 
 ## 📋 Question Types Supported
