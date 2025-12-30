@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, XCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { use, useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useRouter } from '@/i18n/routing';
 
@@ -76,6 +76,8 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
   const [questionStartTime, setQuestionStartTime] = useState<number | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const isInitializing = useRef(false);
+  const hasInitialized = useRef(false);
 
   const fetchGameState = useCallback(async () => {
     if (!game) return;
@@ -247,7 +249,10 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
 
   // Create game on mount or fetch existing one
   useEffect(() => {
+    if (hasInitialized.current || isInitializing.current) return;
+
     const initGame = async () => {
+      isInitializing.current = true;
       try {
         if (gameIdParam) {
           const res = await fetch(`/api/games/${gameIdParam}`);
@@ -260,6 +265,7 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
           setGame(data.game);
           setQuiz(data.quiz);
           setLoading(false);
+          hasInitialized.current = true;
           return;
         }
 
@@ -278,14 +284,20 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
         setGame(data);
         setQuiz(data.quiz);
         setLoading(false);
+        hasInitialized.current = true;
+
+        // Add gameId to URL to prevent re-creation on refresh
+        router.replace(`/master/quiz/${quizId}/host?gameId=${data.id}`);
       } catch (err) {
         setError(err instanceof Error ? err.message : t('error'));
         setLoading(false);
+      } finally {
+        isInitializing.current = false;
       }
     };
 
     initGame();
-  }, [quizId, t, gameIdParam]);
+  }, [quizId, t, gameIdParam, router]);
 
   // Poll for game updates
   useEffect(() => {

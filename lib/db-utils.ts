@@ -479,7 +479,20 @@ export function calculateScore(
   switch (question.question_type) {
     case 'true_false':
     case 'mcq':
-      isCorrect = normalizeString(answer) === normalizeString(question.correct_answer);
+      const normalizedPlayerAnswer = normalizeString(answer);
+      const normalizedCorrectAnswer = normalizeString(question.correct_answer);
+
+      if (question.question_type === 'true_false') {
+        const isTrue =
+          normalizedPlayerAnswer === 'true' ||
+          normalizedPlayerAnswer === 'vrai' ||
+          normalizedPlayerAnswer === 'yes' ||
+          normalizedPlayerAnswer === '1';
+        const correctIsTrue = normalizedCorrectAnswer === 'true';
+        isCorrect = isTrue === correctIsTrue;
+      } else {
+        isCorrect = normalizedPlayerAnswer === normalizedCorrectAnswer;
+      }
       break;
 
     case 'number':

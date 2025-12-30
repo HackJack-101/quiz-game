@@ -60,11 +60,13 @@ global.fetch = jest.fn();
 
 describe('HostGame', () => {
   const mockPush = jest.fn();
+  const mockReplace = jest.fn();
   const mockParams = Promise.resolve({ id: '1' });
 
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({
       push: mockPush,
+      replace: mockReplace,
     });
     jest.clearAllMocks();
   });

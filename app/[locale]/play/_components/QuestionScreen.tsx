@@ -215,11 +215,14 @@ export default function QuestionScreen({
 
               {currentQuestion.questionType === 'true_false' && (
                 <>
-                  {[t('true'), t('false')].map((option, idx) => {
-                    const isSelected = selectedAnswer === option;
-                    const isCorrect = currentQuestion.correctAnswer === option;
+                  {[
+                    { label: t('true'), value: 'true' },
+                    { label: t('false'), value: 'false' },
+                  ].map(({ label, value }, idx) => {
+                    const isSelected = selectedAnswer === value;
+                    const isCorrect = currentQuestion.correctAnswer === value;
 
-                    let bgGradient = option === t('true') ? 'from-blue-500 to-blue-600' : 'from-red-500 to-red-600';
+                    let bgGradient = value === 'true' ? 'from-blue-500 to-blue-600' : 'from-red-500 to-red-600';
                     if (currentQuestion.correctAnswer) {
                       if (isCorrect) bgGradient = 'from-green-500 to-emerald-600';
                       else if (isSelected) bgGradient = 'from-red-500 to-rose-600';
@@ -228,13 +231,13 @@ export default function QuestionScreen({
 
                     return (
                       <motion.button
-                        key={option}
+                        key={value}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         whileHover={!hasAnswered && timeRemaining > 0 ? { scale: 1.02, y: -4 } : {}}
                         whileTap={!hasAnswered && timeRemaining > 0 ? { scale: 0.98 } : {}}
-                        onClick={() => onSubmitAnswer(option)}
+                        onClick={() => onSubmitAnswer(value)}
                         disabled={hasAnswered || timeRemaining === 0}
                         className={`
                           relative overflow-hidden group p-8 rounded-3xl text-center transition-all duration-300 min-h-[160px] flex flex-col items-center justify-center cursor-pointer
@@ -248,7 +251,7 @@ export default function QuestionScreen({
                           bg-gradient-to-br ${bgGradient}
                         `}
                       >
-                        <span className="text-3xl md:text-4xl font-black text-white mb-2">{option}</span>
+                        <span className="text-3xl md:text-4xl font-black text-white mb-2">{label}</span>
                         <div className="flex items-center gap-2">
                           {currentQuestion.correctAnswer && isCorrect && (
                             <CheckCircle2 size={32} className="text-white" />

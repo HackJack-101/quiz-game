@@ -172,7 +172,11 @@ export default function HostQuestion({ currentQuestion, questionAnswers, players
                       <span className="opacity-50 mr-1">{t('answerPrefix')}</span>
                       {(() => {
                         if (currentQuestion.question_type === 'true_false') {
-                          return answer.answer.toLowerCase() === 'true' ? t('true') : t('false');
+                          const isTrue =
+                            answer.answer.toLowerCase() === 'true' ||
+                            answer.answer === t('true') ||
+                            answer.answer.toLowerCase() === 'vrai'; // For legacy French answers
+                          return isTrue ? t('true') : t('false');
                         }
                         if (currentQuestion.question_type === 'multiple_mcq') {
                           try {

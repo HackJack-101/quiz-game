@@ -88,6 +88,21 @@ describe('db-utils', () => {
       expect(calculateScore(multipleMcqQuestion, JSON.stringify(['A', 'B', 'C']), 0, 10000).isCorrect).toBe(false);
       expect(calculateScore(multipleMcqQuestion, 'not-json', 0, 10000).isCorrect).toBe(false);
     });
+
+    it('should handle translated true/false answers robustly', () => {
+      const trueQuestion = { ...question, question_type: 'true_false' as const, correct_answer: 'true' };
+      expect(calculateScore(trueQuestion, 'true', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(trueQuestion, 'True', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(trueQuestion, 'Vrai', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(trueQuestion, '1', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(trueQuestion, 'false', 0, 10000).isCorrect).toBe(false);
+
+      const falseQuestion = { ...question, question_type: 'true_false' as const, correct_answer: 'false' };
+      expect(calculateScore(falseQuestion, 'false', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(falseQuestion, 'False', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(falseQuestion, 'Faux', 0, 10000).isCorrect).toBe(true);
+      expect(calculateScore(falseQuestion, 'true', 0, 10000).isCorrect).toBe(false);
+    });
   });
 
   describe('Database operations', () => {

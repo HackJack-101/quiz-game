@@ -40,3 +40,4 @@ When a task is done, check the checkbox associated.
 - [x] Fix the "time remaining" color text. The red color when the time is up is not readable.
 - [x] Display vertically the quiz list on the master quiz page
 - [x] Fix responsiveness of the delete button in the quiz list
+- [x] Fix true/false question bug where "true" answer was incorrectly handled or displayed
