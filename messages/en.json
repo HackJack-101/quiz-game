@@ -119,6 +119,7 @@
     "startGameWithCount": "Start Game ({count} players)",
     "nextQuestion": "Next Question",
     "replayRound": "Replay Round",
+    "invalidateRound": "Invalidate Round",
     "resetGame": "Reset Game",
     "resetConfirm": "Are you sure you want to reset the game? All progress and scores will be cleared.",
     "showFirstQuestion": "Show First Question",

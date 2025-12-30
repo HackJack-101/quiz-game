@@ -180,6 +180,28 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
     }
   };
 
+  const handleInvalidateRound = async () => {
+    if (!game) return;
+
+    try {
+      const res = await fetch(`/api/games/${game.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'invalidate_round' }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || t('error'));
+      }
+
+      setQuestionStartTime(Date.now());
+      await fetchGameState();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('error'));
+    }
+  };
+
   const handleResetGame = async () => {
     if (!game) return;
 
@@ -480,7 +502,7 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
                         </div>
                       </div>
                       <div
-                        className={`font-black text-2xl ${timeRemaining <= 3 ? 'text-red-400 animate-pulse' : 'text-white'}`}
+                        className={`font-black text-2xl ${timeRemaining <= 3 ? 'text-red-500 animate-pulse' : 'text-white'}`}
                       >
                         {timeRemaining}
                         {t('seconds')}
@@ -491,7 +513,7 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
                         initial={{ width: '100%' }}
                         animate={{ width: `${(timeRemaining / quiz.time_limit) * 100}%` }}
                         transition={{ duration: 1, ease: 'linear' }}
-                        className={`h-full rounded-full ${timeRemaining <= 3 ? 'bg-red-400' : 'bg-green-400'}`}
+                        className={`h-full rounded-full ${timeRemaining <= 3 ? 'bg-red-500' : 'bg-green-400'}`}
                       />
                     </div>
                   </div>
@@ -726,7 +748,7 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleReplayRound}
-                      className="py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black rounded-2xl shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 uppercase italic"
+                      className="py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black rounded-2xl shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 uppercase italic cursor-pointer"
                     >
                       <RotateCcw size={20} />
                       {t('replayRound')}
@@ -734,8 +756,17 @@ export default function HostGame({ params }: { params: Promise<{ id: string }> }
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
+                      onClick={handleInvalidateRound}
+                      className="py-4 bg-gradient-to-r from-slate-400 to-gray-500 text-white font-black rounded-2xl shadow-lg shadow-gray-500/20 flex items-center justify-center gap-2 uppercase italic cursor-pointer"
+                    >
+                      <XCircle size={20} />
+                      {t('invalidateRound')}
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={handleFinishGame}
-                      className="py-4 bg-gradient-to-r from-red-400 to-pink-500 text-white font-black rounded-2xl shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 uppercase italic"
+                      className="py-4 bg-gradient-to-r from-red-400 to-pink-500 text-white font-black rounded-2xl shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 uppercase italic cursor-pointer"
                     >
                       <Trophy size={20} />
                       {t('finishGame')}

@@ -30,7 +30,7 @@ A real-time quiz game where a **Quiz Master** creates and hosts a game, and **Pl
   - View a list of quizzes they have created.
 - **Game Hosting**:
   - Launch a quiz game, which generates a unique **6-digit PIN code**.
-  - Control the progression of questions (Start Game, Next Question, Replay Round, Reset Game).
+  - Control the progression of questions (Start Game, Next Question, Replay Round, Invalidate Round, Reset Game).
   - View live game status and player rankings.
 - **Game History**:
   - View a list of past games hosted by the Quiz Master.

@@ -8,6 +8,7 @@ import {
   getPlayersByGameId,
   getQuestionsByQuizId,
   getQuizById,
+  invalidateRound,
   replayRound,
   resetGame,
   startNextQuestion,
@@ -231,6 +232,38 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         });
       }
 
+      case 'invalidate_round': {
+        // Invalidate the current round: cancel scores and move to next question
+        const result = invalidateRound(gameId);
+        if (!result) {
+          return NextResponse.json({ error: 'Failed to invalidate round' }, { status: 400 });
+        }
+
+        const { game: updatedGame, finished } = result;
+
+        if (finished) {
+          const players = getPlayersByGameId(gameId);
+          return NextResponse.json({
+            game: updatedGame,
+            players: players.sort((a, b) => b.score - a.score),
+            message: 'Game finished - no more questions',
+          });
+        }
+
+        const questions = getQuestionsByQuizId(updatedGame.quiz_id);
+        const newQuestion = questions[updatedGame.current_question_index];
+
+        return NextResponse.json({
+          game: updatedGame,
+          currentQuestion: {
+            ...newQuestion,
+            options: newQuestion.options ? JSON.parse(newQuestion.options) : null,
+          },
+          questionNumber: updatedGame.current_question_index + 1,
+          totalQuestions: questions.length,
+        });
+      }
+
       case 'reset': {
         // Reset the game
         const updatedGame = resetGame(gameId);
@@ -254,7 +287,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         return NextResponse.json(
           {
             error:
-              'Invalid action. Must be one of: start, next_question, show_results, finish, replay_round, reset, resume',
+              'Invalid action. Must be one of: start, next_question, show_results, finish, replay_round, invalidate_round, reset, resume',
           },
           { status: 400 },
         );

@@ -10,6 +10,7 @@ When a task is done, check the checkbox associated.
 - [x] Add a statistics page for the quiz master at the end of the game
 - [x] Add an action to reset the game
 - [x] Add an action for the quiz master to replay the last round
+- [x] Add an action for the quiz master to invalidate the round
 - [x] Ensure that the website is responsive for at least iphone 13 mini (portrait) and iPad 11 inches (portrait or landscape)
 - [x] Add a way to change the order of questions for the quiz master
 - [x] Add an action for the quiz master to fully delete his account
@@ -36,3 +37,4 @@ When a task is done, check the checkbox associated.
 - [x] Fix database permission issues in Docker Compose (enhanced fix)
 - [x] Fix database permission issues in Docker Compose (final robust fix)
 - [x] Improve HTTP performances with http2
+- [x] Fix the "time remaining" color text. The red color when the time is up is not readable.

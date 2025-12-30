@@ -648,8 +648,8 @@ export default function PlayPage() {
           </div>
 
           <div className="sm:hidden bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 flex items-center gap-2">
-            <Clock size={16} className={timeRemaining <= 3 ? 'text-red-400 animate-pulse' : 'text-purple-300'} />
-            <span className={`font-mono font-black text-sm ${timeRemaining <= 3 ? 'text-red-400' : 'text-white'}`}>
+            <Clock size={16} className={timeRemaining <= 3 ? 'text-red-500 animate-pulse' : 'text-purple-300'} />
+            <span className={`font-mono font-black text-sm ${timeRemaining <= 3 ? 'text-red-500' : 'text-white'}`}>
               {timeRemaining}s
             </span>
           </div>
@@ -671,8 +671,8 @@ export default function PlayPage() {
         </div>
 
         <div className="hidden sm:flex bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 items-center gap-2">
-          <Clock size={18} className={timeRemaining <= 3 ? 'text-red-400 animate-pulse' : 'text-purple-300'} />
-          <span className={`font-mono font-black text-lg ${timeRemaining <= 3 ? 'text-red-400' : 'text-white'}`}>
+          <Clock size={18} className={timeRemaining <= 3 ? 'text-red-500 animate-pulse' : 'text-purple-300'} />
+          <span className={`font-mono font-black text-lg ${timeRemaining <= 3 ? 'text-red-500' : 'text-white'}`}>
             {timeRemaining}
             <span className="text-[10px] uppercase ml-1 opacity-50">{t('seconds')}</span>
           </span>

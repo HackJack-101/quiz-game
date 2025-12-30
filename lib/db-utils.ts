@@ -282,6 +282,71 @@ export function replayRound(gameId: number): Game | undefined {
   return getGameById(gameId);
 }
 
+export function invalidateRound(gameId: number): { game: Game; finished: boolean } | undefined {
+  const game = getGameById(gameId);
+  if (!game || game.current_question_index < 0) return undefined;
+
+  const questions = getQuestionsByQuizId(game.quiz_id);
+  let currentIndex = game.current_question_index;
+
+  if (currentIndex >= questions.length) {
+    currentIndex = questions.length - 1;
+  }
+
+  const currentQuestion = questions[currentIndex];
+
+  // Find all answers for this question for players in this game
+  const answers = db
+    .prepare(
+      `
+    SELECT a.* FROM answers a
+    JOIN players p ON a.player_id = p.id
+    WHERE p.game_id = ? AND a.question_id = ?
+  `,
+    )
+    .all(gameId, currentQuestion.id) as Answer[];
+
+  const isLastQuestion = currentIndex >= questions.length - 1;
+
+  const transaction = db.transaction(() => {
+    // Revert player scores
+    for (const answer of answers) {
+      if (answer.points_earned > 0) {
+        db.prepare('UPDATE players SET score = score - ? WHERE id = ?').run(answer.points_earned, answer.player_id);
+      }
+    }
+
+    // Delete answers
+    db.prepare(
+      `
+      DELETE FROM answers 
+      WHERE id IN (
+        SELECT a.id FROM answers a
+        JOIN players p ON a.player_id = p.id
+        WHERE p.game_id = ? AND a.question_id = ?
+      )
+    `,
+    ).run(gameId, currentQuestion.id);
+
+    // Move to next question or finish the game
+    if (isLastQuestion) {
+      db.prepare("UPDATE games SET status = 'finished', question_started_at = NULL WHERE id = ?").run(gameId);
+    } else {
+      const newIndex = currentIndex + 1;
+      db.prepare(
+        "UPDATE games SET current_question_index = ?, question_started_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), status = 'question' WHERE id = ?",
+      ).run(newIndex, gameId);
+    }
+  });
+
+  transaction();
+
+  const updatedGame = getGameById(gameId);
+  if (!updatedGame) return undefined;
+
+  return { game: updatedGame, finished: isLastQuestion };
+}
+
 export function getActiveGamesByQuizId(quizId: number): Game[] {
   return db
     .prepare("SELECT * FROM games WHERE quiz_id = ? AND status != 'finished' ORDER BY created_at DESC")

@@ -119,6 +119,7 @@
     "startGameWithCount": "Commencer le Jeu ({count} joueurs)",
     "nextQuestion": "Question Suivante",
     "replayRound": "Rejouer le Tour",
+    "invalidateRound": "Invalider le Tour",
     "resetGame": "Réinitialiser le Jeu",
     "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser le jeu ? Toute la progression et les scores seront effacés.",
     "showFirstQuestion": "Afficher la Première Question",
