@@ -47,15 +47,24 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
   if (!fs.existsSync(dbPath) || fs.statSync(dbPath).size === 0) {
     if (!fs.existsSync(dbPath)) {
       console.info(`Database not found at ${dbPath}, creating a new fresh one.`);
+    } else {
+      console.info(`Database file at ${dbPath} is empty, it will be initialized.`);
     }
     try {
       // Ensure the directory is writable
       const dataDir = path.dirname(dbPath);
-      fs.accessSync(dataDir, fs.constants.W_OK);
+      if (fs.existsSync(dataDir)) {
+        fs.accessSync(dataDir, fs.constants.W_OK);
+      } else {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
     } catch (err) {
       console.error(`Database directory ${path.dirname(dbPath)} is not writable:`, err);
       console.error(
         `Please ensure the directory has correct permissions. In Docker, you might need to run: chown -R 1001:1001 /path/to/your/volume`,
+      );
+      console.error(
+        `Alternatively, if you are using Docker Compose, you can try adding 'user: "1001:1001"' to your service configuration.`,
       );
     }
   }

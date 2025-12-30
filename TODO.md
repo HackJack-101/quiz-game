@@ -34,3 +34,4 @@ When a task is done, check the checkbox associated.
 - [x] Force dark theme regardless of system settings
 - [x] If the database is not found at launch, create a new fresh one
 - [x] Fix database permission issues in Docker Compose (enhanced fix)
+- [x] Fix database permission issues in Docker Compose (final robust fix)

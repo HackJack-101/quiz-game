@@ -51,10 +51,12 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Ensure the database directory exists and is writable by the non-root user
 # We use 777 permissions to ensure compatibility with various Docker volume configurations
+# Using a VOLUME instruction helps Docker handle permission inheritance for named volumes
 RUN mkdir -p data && \
-    touch data/quiz.db && \
     chown -R nextjs:nodejs data && \
-    chmod -R 777 data
+    chmod 777 data
+
+VOLUME /app/data
 
 USER nextjs
 

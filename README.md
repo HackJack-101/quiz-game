@@ -79,6 +79,9 @@ docker compose up -d
 
 This will pull the image from GHCR and start the application on port 3000. The SQLite database is persisted using a Docker volume named `quiz_data`.
 
+> [!IMPORTANT]
+> If you encounter permission issues with the database volume (e.g., `SQLITE_CANTOPEN`), ensure the volume is writable by the non-root user (UID 1001). The provided `docker-compose.yml` includes `user: "1001:1001"` to help with this. If problems persist, you might need to run `chown -R 1001:1001 /path/to/your/volume` on the host.
+
 ### Manual Docker Build
 
 You can also build and run the image manually:
