@@ -1,26 +1,15 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: quizz-game
+    image: ghcr.io/hackjack-101/quiz-game:latest
+    container_name: quiz-game
     ports:
       - '3000:3000'
     volumes:
-      - quizz-db:/app/quiz.db
+      - ./quiz.db:/app/quiz.db
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          'CMD',
-          'node',
-          '-e',
-          "require('http').get('http://localhost:3000/api/health', (res) => res.statusCode === 200 ? process.exit(0) : process.exit(1)).on('error', () => process.exit(1))",
-        ]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 5s
-
-volumes:
-  quizz-db:

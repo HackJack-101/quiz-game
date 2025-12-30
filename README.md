@@ -1,5 +1,7 @@
 # 🎯 Quiz Game
 
+Official Repository: [https://github.com/hackjack-101/quiz-game](https://github.com/hackjack-101/quiz-game)
+
 A real-time, interactive quiz game application built with Next.js, TypeScript, and SQLite.
 
 ## 🚀 Features
@@ -75,7 +77,7 @@ The easiest way to run the application is using Docker Compose:
 docker compose up -d
 ```
 
-This will build the image and start the application on port 3000. The SQLite database is persisted using a named volume.
+This will pull the image from GHCR and start the application on port 3000. The SQLite database is persisted using a host-bind mount to the `quiz.db` file in the current directory.
 
 ### Manual Docker Build
 
@@ -84,13 +86,13 @@ You can also build and run the image manually:
 #### Build the image
 
 ```bash
-docker build -t quizz-game .
+docker build -t quiz-game .
 ```
 
 ### Run the container
 
 ```bash
-docker run -p 3000:3000 quizz-game
+docker run -p 3000:3000 quiz-game
 ```
 
 The application will be available at [http://localhost:3000](http://localhost:3000).
