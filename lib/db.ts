@@ -18,7 +18,10 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
 
   // Migration from old location
   const oldDbPath = path.join(process.cwd(), 'quiz.db');
-  if (fs.existsSync(oldDbPath) && !fs.existsSync(dbPath)) {
+  const dbExists = fs.existsSync(dbPath);
+  const dbIsEmpty = dbExists && fs.statSync(dbPath).size === 0;
+
+  if (fs.existsSync(oldDbPath) && (!dbExists || dbIsEmpty)) {
     try {
       // Check if it's a valid SQLite database before migrating
       const buffer = Buffer.alloc(16);
@@ -27,6 +30,9 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
       fs.closeSync(fd);
 
       if (buffer.toString('utf8', 0, 15) === 'SQLite format 3') {
+        if (dbExists) {
+          fs.unlinkSync(dbPath);
+        }
         fs.copyFileSync(oldDbPath, dbPath);
         console.info(`Migrated database from ${oldDbPath} to ${dbPath}`);
       } else {
@@ -37,9 +43,18 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
     }
   }
 
-  // If the database is not found at launch, create a new fresh one
-  if (!fs.existsSync(dbPath)) {
-    console.info(`Database not found at ${dbPath}, creating a new fresh one.`);
+  // If the database is not found or is empty at launch, create a new fresh one
+  if (!fs.existsSync(dbPath) || fs.statSync(dbPath).size === 0) {
+    if (!fs.existsSync(dbPath)) {
+      console.info(`Database not found at ${dbPath}, creating a new fresh one.`);
+    }
+    try {
+      // Ensure the directory is writable
+      const dataDir = path.dirname(dbPath);
+      fs.accessSync(dataDir, fs.constants.W_OK);
+    } catch (err) {
+      console.error(`Database directory ${path.dirname(dbPath)} is not writable:`, err);
+    }
   }
 }
 
@@ -47,7 +62,26 @@ let db: Database.Database;
 try {
   db = new Database(dbPath);
 } catch (err) {
+  const dataDir = path.dirname(dbPath);
   console.error(`Failed to open database at ${dbPath}:`, err);
+
+  if (fs.existsSync(dataDir)) {
+    try {
+      const stats = fs.statSync(dataDir);
+      console.error(`Directory info for ${dataDir}:`, {
+        uid: stats.uid,
+        gid: stats.gid,
+        mode: stats.mode.toString(8),
+        currentUser: process.getuid ? process.getuid() : 'unknown',
+        currentGroup: process.getgid ? process.getgid() : 'unknown',
+      });
+    } catch (statErr) {
+      console.error(`Failed to get directory stats:`, statErr);
+    }
+  } else {
+    console.error(`Directory ${dataDir} does not exist.`);
+  }
+
   throw err;
 }
 

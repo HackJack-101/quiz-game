@@ -50,7 +50,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Ensure the database directory exists and is writable by the non-root user
-RUN mkdir -p data && chown nextjs:nodejs data
+# We also create an empty database file to ensure correct ownership when using volumes
+RUN mkdir -p data && \
+    touch data/quiz.db && \
+    chown -R nextjs:nodejs data && \
+    chmod -R 775 data
 
 USER nextjs
 
