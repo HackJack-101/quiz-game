@@ -33,8 +33,8 @@ ENV NODE_ENV production
 # Disable Next.js telemetry during runtime
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Install su-exec for dropping privileges in entrypoint
-RUN apt-get update && apt-get install -y --no-install-recommends su-exec && rm -rf /var/lib/apt/lists/*
+# Install gosu for dropping privileges in entrypoint (su-exec is Alpine-only, gosu is for Debian)
+RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \

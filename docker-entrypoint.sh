@@ -18,8 +18,8 @@ if [ "$(id -u)" = "0" ]; then
     # Change ownership of the data directory to nextjs user
     chown -R "$NEXTJS_UID:$NEXTJS_GID" "$DATA_DIR"
     
-    # Execute the command as the nextjs user
-    exec su-exec "$NEXTJS_USER" "$@"
+    # Execute the command as the nextjs user using gosu (Debian equivalent of su-exec)
+    exec gosu "$NEXTJS_USER" "$@"
 else
     # Already running as non-root, just execute the command
     exec "$@"
