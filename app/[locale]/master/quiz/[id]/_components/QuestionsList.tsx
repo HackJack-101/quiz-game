@@ -4,13 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, ChevronDown, ChevronUp, Edit3, LayoutDashboard, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-interface Question {
-  id: number;
-  question_text: string;
-  question_type: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  correct_answer: string;
-  options: string[] | null;
-}
+import { Question } from '@/lib/types';
 
 interface QuestionsListProps {
   questions: Question[];

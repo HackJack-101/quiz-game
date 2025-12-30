@@ -38,7 +38,7 @@ describe('resetGame', () => {
     // Verify initial state
     let players = getPlayersByGameId(game.id);
     expect(players[0].score).toBeGreaterThan(0);
-    let answers = getAnswersByQuestionId(question.id);
+    let answers = getAnswersByQuestionId(question.id, game.id);
     expect(answers.length).toBe(1);
 
     // Reset game
@@ -52,7 +52,7 @@ describe('resetGame', () => {
     players = getPlayersByGameId(game.id);
     expect(players[0].score).toBe(0);
 
-    answers = getAnswersByQuestionId(question.id);
+    answers = getAnswersByQuestionId(question.id, game.id);
     expect(answers.length).toBe(0);
   });
 

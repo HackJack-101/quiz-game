@@ -41,7 +41,7 @@ describe('invalidateRound', () => {
     let players = getPlayersByGameId(game.id);
     const initialScore = players[0].score;
     expect(initialScore).toBeGreaterThan(0);
-    let answers = getAnswersByQuestionId(question1.id);
+    let answers = getAnswersByQuestionId(question1.id, game.id);
     expect(answers.length).toBe(1);
 
     // Invalidate round
@@ -56,7 +56,7 @@ describe('invalidateRound', () => {
     expect(players[0].score).toBe(0);
 
     // Verify answers were deleted
-    answers = getAnswersByQuestionId(question1.id);
+    answers = getAnswersByQuestionId(question1.id, game.id);
     expect(answers.length).toBe(0);
   });
 
@@ -85,7 +85,7 @@ describe('invalidateRound', () => {
     expect(players[0].score).toBe(0);
 
     // Verify answers were deleted
-    const answers = getAnswersByQuestionId(question.id);
+    const answers = getAnswersByQuestionId(question.id, game.id);
     expect(answers.length).toBe(0);
   });
 
@@ -121,7 +121,7 @@ describe('invalidateRound', () => {
     // Verify initial state
     let players = getPlayersByGameId(game.id);
     expect(players.every((p) => p.score > 0)).toBe(true);
-    let answers = getAnswersByQuestionId(question1.id);
+    let answers = getAnswersByQuestionId(question1.id, game.id);
     expect(answers.length).toBe(2);
 
     // Invalidate round
@@ -134,7 +134,7 @@ describe('invalidateRound', () => {
     expect(players.every((p) => p.score === 0)).toBe(true);
 
     // Verify all answers were deleted
-    answers = getAnswersByQuestionId(question1.id);
+    answers = getAnswersByQuestionId(question1.id, game.id);
     expect(answers.length).toBe(0);
   });
 });

@@ -241,15 +241,7 @@ export function replayRound(gameId: number): Game | undefined {
   const currentQuestion = questions[indexToReplay];
 
   // Find all answers for this question for players in this game
-  const answers = db
-    .prepare(
-      `
-    SELECT a.* FROM answers a
-    JOIN players p ON a.player_id = p.id
-    WHERE p.game_id = ? AND a.question_id = ?
-  `,
-    )
-    .all(gameId, currentQuestion.id) as Answer[];
+  const answers = getAnswersByQuestionId(currentQuestion.id, gameId);
 
   const transaction = db.transaction(() => {
     // Revert player scores
@@ -296,15 +288,7 @@ export function invalidateRound(gameId: number): { game: Game; finished: boolean
   const currentQuestion = questions[currentIndex];
 
   // Find all answers for this question for players in this game
-  const answers = db
-    .prepare(
-      `
-    SELECT a.* FROM answers a
-    JOIN players p ON a.player_id = p.id
-    WHERE p.game_id = ? AND a.question_id = ?
-  `,
-    )
-    .all(gameId, currentQuestion.id) as Answer[];
+  const answers = getAnswersByQuestionId(currentQuestion.id, gameId);
 
   const isLastQuestion = currentIndex >= questions.length - 1;
 
@@ -388,11 +372,11 @@ export function updatePlayerScore(playerId: number, additionalPoints: number): P
   return getPlayerById(playerId);
 }
 
-export function awardNumberBonus(questionId: number): void {
+export function awardNumberBonus(gameId: number, questionId: number): void {
   const question = getQuestionById(questionId);
   if (!question || question.question_type !== 'number') return;
 
-  const closest = findClosestNumberAnswer(questionId);
+  const closest = findClosestNumberAnswer(gameId, questionId);
   if (closest && closest.difference > 0) {
     // Check if bonus already awarded (points_earned > 0 for this answer)
     const currentAnswer = db
@@ -445,8 +429,16 @@ export function submitAnswer(playerId: number, questionId: number, answer: strin
   return db.prepare('SELECT * FROM answers WHERE id = ?').get(result.lastInsertRowid) as Answer;
 }
 
-export function getAnswersByQuestionId(questionId: number): Answer[] {
-  return db.prepare('SELECT * FROM answers WHERE question_id = ?').all(questionId) as Answer[];
+export function getAnswersByQuestionId(questionId: number, gameId: number): Answer[] {
+  return db
+    .prepare(
+      `
+      SELECT a.* FROM answers a
+      JOIN players p ON a.player_id = p.id
+      WHERE p.game_id = ? AND a.question_id = ?
+    `,
+    )
+    .all(gameId, questionId) as Answer[];
 }
 
 export function getAnswersByPlayerId(playerId: number): Answer[] {
@@ -543,6 +535,7 @@ export function calculateScore(
 
 // For number questions, find the closest answer
 export function findClosestNumberAnswer(
+  gameId: number,
   questionId: number,
 ): { playerId: number; answer: string; difference: number } | null {
   const question = db.prepare('SELECT * FROM questions WHERE id = ?').get(questionId) as Question;
@@ -552,7 +545,7 @@ export function findClosestNumberAnswer(
   }
 
   const correctNum = parseFloat(question.correct_answer);
-  const answers = getAnswersByQuestionId(questionId);
+  const answers = getAnswersByQuestionId(questionId, gameId);
 
   if (answers.length === 0) {
     return null;
@@ -643,15 +636,7 @@ export function getGameStats(gameId: number): GameStats | undefined {
 
   const questions = getQuestionsByQuizId(game.quiz_id);
   const questionStats = questions.map((q) => {
-    const answers = db
-      .prepare(
-        `
-      SELECT a.* FROM answers a
-      JOIN players p ON a.player_id = p.id
-      WHERE p.game_id = ? AND a.question_id = ?
-    `,
-      )
-      .all(gameId, q.id) as Answer[];
+    const answers = getAnswersByQuestionId(q.id, gameId);
 
     const correctAnswers = answers.filter((a) => a.is_correct).length;
     const totalAnswers = answers.length;

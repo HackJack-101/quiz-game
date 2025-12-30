@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { useRouter } from '@/i18n/routing';
+import { Player, PlayerGame, PlayerQuestion, PlayerQuiz } from '@/lib/types';
 
 import ExitModal from './_components/ExitModal';
 import GameFinished from './_components/GameFinished';
@@ -14,34 +15,6 @@ import Intermission from './_components/Intermission';
 import JoinForm from './_components/JoinForm';
 import QuestionScreen from './_components/QuestionScreen';
 import WaitingRoom from './_components/WaitingRoom';
-
-interface Player {
-  id: number;
-  game_id: number;
-  name: string;
-  score: number;
-}
-
-interface Game {
-  id: number;
-  status: 'waiting' | 'active' | 'question' | 'finished';
-  currentQuestionIndex: number;
-  questionStartedAt: string | null;
-}
-
-interface Quiz {
-  id: number;
-  title: string;
-  timeLimit: number;
-}
-
-interface Question {
-  id: number;
-  questionText: string;
-  questionType: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  options: string[] | null;
-  correctAnswer?: string;
-}
 
 interface LeaderboardEntry {
   rank: number;
@@ -58,10 +31,10 @@ export default function PlayPage() {
   const [playerName, setPlayerName] = useState('');
   const [playerId, setPlayerId] = useState<number | null>(null);
 
-  const [game, setGame] = useState<Game | null>(null);
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const [game, setGame] = useState<PlayerGame | null>(null);
+  const [quiz, setQuiz] = useState<PlayerQuiz | null>(null);
   const [player, setPlayer] = useState<Player | null>(null);
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState<PlayerQuestion | null>(null);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
@@ -362,7 +335,6 @@ export default function PlayPage() {
         hasAnswered={hasAnswered}
         answerResult={answerResult}
         player={player}
-        onSelectAnswer={setSelectedAnswer}
         onToggleMultipleMcqAnswer={toggleMultipleMcqAnswer}
         onSubmitAnswer={handleSubmitAnswer}
         onExit={() => setShowExitConfirm(true)}

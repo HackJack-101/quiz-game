@@ -4,13 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-interface Question {
-  id: number;
-  question_text: string;
-  question_type: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  correct_answer: string;
-  options: string[] | null;
-}
+import { Question } from '@/lib/types';
 
 interface QuestionFormProps {
   show: boolean;

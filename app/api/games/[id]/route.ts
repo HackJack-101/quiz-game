@@ -67,11 +67,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       };
 
       if (isRevealed && q.question_type === 'number') {
-        awardNumberBonus(q.id);
+        awardNumberBonus(gameId, q.id);
       }
 
       // Get answers for current question
-      const answers = getAnswersByQuestionId(q.id);
+      const answers = getAnswersByQuestionId(q.id, gameId);
       questionAnswers = answers.map((a) => {
         const player = players.find((p) => p.id === a.player_id);
         return {
@@ -140,7 +140,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         if (game.current_question_index >= 0 && game.current_question_index < questions.length) {
           const currentQ = questions[game.current_question_index];
           if (currentQ.question_type === 'number') {
-            awardNumberBonus(currentQ.id);
+            awardNumberBonus(gameId, currentQ.id);
           }
         }
 
@@ -177,7 +177,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         }
 
         const currentQ = questions[game.current_question_index];
-        const answers = getAnswersByQuestionId(currentQ.id);
+        const answers = getAnswersByQuestionId(currentQ.id, gameId);
         const players = getPlayersByGameId(gameId);
 
         return NextResponse.json({

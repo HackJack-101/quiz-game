@@ -6,26 +6,11 @@ import { useTranslations } from 'next-intl';
 import { use, useCallback, useEffect, useState } from 'react';
 
 import { Link } from '@/i18n/routing';
+import { Question, Quiz } from '@/lib/types';
 
 import QuestionForm from './_components/QuestionForm';
 import QuestionsList from './_components/QuestionsList';
 import QuizInfo from './_components/QuizInfo';
-
-interface Quiz {
-  id: number;
-  title: string;
-  description: string | null;
-  time_limit: number;
-}
-
-interface Question {
-  id: number;
-  question_text: string;
-  question_type: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  correct_answer: string;
-  options: string[] | null;
-  order_index: number;
-}
 
 export default function QuizEditor({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('QuizEditor');

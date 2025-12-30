@@ -7,56 +7,13 @@ import { useTranslations } from 'next-intl';
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useRouter } from '@/i18n/routing';
+import { Answer, Game, Player, Question, Quiz } from '@/lib/types';
 
 import HostControls from './_components/HostControls';
 import HostExitModal from './_components/HostExitModal';
 import HostHeader from './_components/HostHeader';
 import HostQuestion from './_components/HostQuestion';
 import HostSidebar from './_components/HostSidebar';
-
-interface Quiz {
-  id: number;
-  title: string;
-  description: string | null;
-  time_limit: number;
-}
-
-interface Game {
-  id: number;
-  quiz_id: number;
-  pin_code: string | null;
-  status: 'waiting' | 'active' | 'question' | 'finished';
-  current_question_index: number;
-  created_at: string;
-}
-
-interface Player {
-  id: number;
-  game_id: number;
-  name: string;
-  score: number;
-  joined_at: string;
-}
-
-interface Question {
-  id: number;
-  question_text: string;
-  question_type: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  correct_answer: string;
-  options: string[] | null;
-  order_index: number;
-}
-
-interface Answer {
-  id: number;
-  player_id: number;
-  question_id: number;
-  answer: string;
-  time_taken: number;
-  is_correct: boolean;
-  playerName: string;
-  points_earned: number;
-}
 
 export default function HostGame({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('HostGame');

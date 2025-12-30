@@ -141,7 +141,7 @@ describe('db-utils', () => {
       submitAnswer(p2.id, question.id, '110', 1000);
       submitAnswer(p3.id, question.id, '101', 1000);
 
-      const closest = findClosestNumberAnswer(question.id);
+      const closest = findClosestNumberAnswer(game.id, question.id);
       expect(closest?.playerId).toBe(p3.id);
       expect(closest?.difference).toBe(1);
     });

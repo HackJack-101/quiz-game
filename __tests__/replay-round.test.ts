@@ -33,7 +33,7 @@ describe('replayRound', () => {
     let p1After = getPlayerById(p1.id);
     expect(p1After?.score).toBeGreaterThan(0);
 
-    let answers = getAnswersByQuestionId(q1.id);
+    let answers = getAnswersByQuestionId(q1.id, game.id);
     expect(answers.length).toBe(2);
 
     // Replay round
@@ -46,7 +46,7 @@ describe('replayRound', () => {
     expect(p1After?.score).toBe(0);
 
     // Check answers deleted
-    answers = getAnswersByQuestionId(q1.id);
+    answers = getAnswersByQuestionId(q1.id, game.id);
     expect(answers.length).toBe(0);
   });
 

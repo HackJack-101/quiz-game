@@ -4,13 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, Clock, LogOut, Rocket, Send, User, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-interface Question {
-  id: number;
-  questionText: string;
-  questionType: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  options: string[] | null;
-  correctAnswer?: string;
-}
+import { PlayerQuestion } from '@/lib/types';
 
 interface Player {
   name: string;
@@ -18,7 +12,7 @@ interface Player {
 }
 
 interface QuestionScreenProps {
-  currentQuestion: Question;
+  currentQuestion: PlayerQuestion;
   questionNumber: number;
   totalQuestions: number;
   timeRemaining: number;

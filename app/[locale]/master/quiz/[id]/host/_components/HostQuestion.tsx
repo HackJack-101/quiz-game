@@ -4,22 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { BarChart3, Play, Trophy, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-interface Question {
-  id: number;
-  question_text: string;
-  question_type: 'true_false' | 'mcq' | 'number' | 'free_text' | 'multiple_mcq';
-  correct_answer: string;
-  options: string[] | null;
-}
-
-interface Answer {
-  id: number;
-  playerName: string;
-  answer: string;
-  time_taken: number;
-  is_correct: boolean;
-  points_earned: number;
-}
+import { Answer, Question } from '@/lib/types';
 
 interface HostQuestionProps {
   currentQuestion: Question;
@@ -159,7 +144,7 @@ export default function HostQuestion({ currentQuestion, questionAnswers, players
                       </motion.span>
                     )}
                     <span className="text-white/50 text-[10px] font-mono font-bold">
-                      {answer.time_taken.toFixed(1)}
+                      {answer.time_taken?.toFixed(1) || '0.0'}
                       {t('seconds')}
                     </span>
                   </div>
