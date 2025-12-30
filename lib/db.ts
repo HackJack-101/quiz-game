@@ -2,13 +2,18 @@ import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 
-const dbPath = process.env.NODE_ENV === 'test' ? ':memory:' : path.join(process.cwd(), 'data', 'quiz.db');
+const dbPath =
+  process.env.DB_PATH || (process.env.NODE_ENV === 'test' ? ':memory:' : path.join(process.cwd(), 'data', 'quiz.db'));
 
 // Ensure the data directory exists in production
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
   const dataDir = path.dirname(dbPath);
   if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+    } catch (err) {
+      console.error(`Failed to create data directory at ${dataDir}:`, err);
+    }
   }
 
   // Migration from old location
@@ -16,13 +21,20 @@ if (process.env.NODE_ENV !== 'test') {
   if (fs.existsSync(oldDbPath) && !fs.existsSync(dbPath)) {
     try {
       fs.copyFileSync(oldDbPath, dbPath);
+      console.log(`Migrated database from ${oldDbPath} to ${dbPath}`);
     } catch (err) {
       console.error('Failed to migrate existing quiz.db:', err);
     }
   }
 }
 
-const db = new Database(dbPath);
+let db: Database.Database;
+try {
+  db = new Database(dbPath);
+} catch (err) {
+  console.error(`Failed to open database at ${dbPath}:`, err);
+  throw err;
+}
 
 // Enable foreign keys
 db.pragma('foreign_keys = ON');

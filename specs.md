@@ -119,6 +119,6 @@ The application uses a local `quiz.db` file with the following tables:
 
 - **Docker**: The application is containerized using a multi-stage `Dockerfile` and can be managed with `docker-compose.yml`.
 - **Base Image**: The application image is available on GitHub Container Registry (`ghcr.io/hackjack-101/quiz-game`).
-- **Persistence**: The SQLite database is persisted using a host-bind mount to a `quiz.db` file.
+- **Persistence**: The SQLite database is persisted using a Docker volume.
 - **Security**: Runs as a non-root user (`nextjs`).
 - **Healthcheck**: Periodically checks `/api/health` to ensure the application is responsive, both in the Dockerfile and Docker Compose.
