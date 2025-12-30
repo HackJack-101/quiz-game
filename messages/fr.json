@@ -192,6 +192,7 @@
     "questionXofY": "Question {current} sur {total}",
     "timeRemaining": "Temps restant",
     "submitAnswer": "ENVOYER",
+    "submitMultiple": "Envoyer les {count} réponses",
     "answerSubmitted": "RÉPONSE ENVOYÉE !",
     "waitingForOthers": "En attente des autres joueurs...",
     "timesUp": "TEMPS ÉCOULÉ !",

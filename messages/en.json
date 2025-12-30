@@ -192,6 +192,7 @@
     "questionXofY": "Question {current} of {total}",
     "timeRemaining": "Time Left",
     "submitAnswer": "SEND",
+    "submitMultiple": "Submit {count} answers",
     "answerSubmitted": "ANSWER SUBMITTED!",
     "waitingForOthers": "Waiting for other players...",
     "timesUp": "TIME'S UP!",
