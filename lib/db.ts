@@ -54,6 +54,9 @@ if (process.env.NODE_ENV !== 'test' && dbPath !== ':memory:') {
       fs.accessSync(dataDir, fs.constants.W_OK);
     } catch (err) {
       console.error(`Database directory ${path.dirname(dbPath)} is not writable:`, err);
+      console.error(
+        `Please ensure the directory has correct permissions. In Docker, you might need to run: chown -R 1001:1001 /path/to/your/volume`,
+      );
     }
   }
 }
@@ -75,8 +78,18 @@ try {
         currentUser: process.getuid ? process.getuid() : 'unknown',
         currentGroup: process.getgid ? process.getgid() : 'unknown',
       });
+
+      if (fs.existsSync(dbPath)) {
+        const dbStats = fs.statSync(dbPath);
+        console.error(`Database file info for ${dbPath}:`, {
+          uid: dbStats.uid,
+          gid: dbStats.gid,
+          mode: dbStats.mode.toString(8),
+          size: dbStats.size,
+        });
+      }
     } catch (statErr) {
-      console.error(`Failed to get directory stats:`, statErr);
+      console.error(`Failed to get diagnostic info:`, statErr);
     }
   } else {
     console.error(`Directory ${dataDir} does not exist.`);

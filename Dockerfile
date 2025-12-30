@@ -34,8 +34,8 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Create a non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --ingroup nodejs nextjs
 
 # Copy public assets
 COPY --from=builder /app/public ./public
@@ -50,11 +50,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Ensure the database directory exists and is writable by the non-root user
-# We also create an empty database file to ensure correct ownership when using volumes
+# We use 777 permissions to ensure compatibility with various Docker volume configurations
 RUN mkdir -p data && \
     touch data/quiz.db && \
     chown -R nextjs:nodejs data && \
-    chmod -R 775 data
+    chmod -R 777 data
 
 USER nextjs
 
