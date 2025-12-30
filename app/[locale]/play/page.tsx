@@ -121,6 +121,11 @@ export default function PlayPage() {
               message: data.playerAnswer.isCorrect ? t('correct') : t('incorrect'),
             });
           }
+        } else if (data.currentQuestion) {
+          // Reset answer state if no playerAnswer exists (e.g., round was replayed)
+          setSelectedAnswer('');
+          setHasAnswered(false);
+          setAnswerResult(null);
         }
 
         if (data.game.status === 'question' && data.game.questionStartedAt && data.quiz) {
