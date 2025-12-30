@@ -104,8 +104,11 @@ export default function PlayPage() {
 
         const data = await res.json();
 
-        // Reset answer state if question changed
-        if (currentQuestion?.id !== data.currentQuestion?.id) {
+        // Reset answer state if question changed or round replayed
+        if (
+          currentQuestion?.id !== data.currentQuestion?.id ||
+          game?.questionStartedAt !== data.game.questionStartedAt
+        ) {
           setSelectedAnswer('');
           setHasAnswered(false);
           setAnswerResult(null);
@@ -128,11 +131,6 @@ export default function PlayPage() {
               message: data.playerAnswer.isCorrect ? t('correct') : t('incorrect'),
             });
           }
-        } else if (data.currentQuestion) {
-          // Reset answer state if no playerAnswer exists (e.g., round was replayed)
-          setSelectedAnswer('');
-          setHasAnswered(false);
-          setAnswerResult(null);
         }
 
         if (data.game.status === 'question' && data.game.questionStartedAt && data.quiz) {
@@ -155,7 +153,7 @@ export default function PlayPage() {
     fetchState();
     const interval = setInterval(fetchState, 2000);
     return () => clearInterval(interval);
-  }, [playerId, joined, currentQuestion?.id, t]);
+  }, [playerId, joined, currentQuestion?.id, game?.questionStartedAt, t]);
 
   // Timer countdown
   useEffect(() => {

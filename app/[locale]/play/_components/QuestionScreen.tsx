@@ -268,16 +268,29 @@ export default function QuestionScreen({
 
               {(currentQuestion.questionType === 'free_text' || currentQuestion.questionType === 'number') && (
                 <div className="col-span-full space-y-4">
-                  <div className="flex gap-3">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!hasAnswered && timeRemaining > 0 && selectedAnswer.trim()) {
+                        onSubmitAnswer(selectedAnswer);
+                      }
+                    }}
+                    className="flex flex-col gap-3"
+                  >
                     <input
                       type={currentQuestion.questionType === 'number' ? 'number' : 'text'}
                       value={selectedAnswer}
                       onChange={(e) => setSelectedAnswer(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !hasAnswered && timeRemaining > 0 && selectedAnswer.trim()) {
+                          onSubmitAnswer(selectedAnswer);
+                        }
+                      }}
                       disabled={hasAnswered || timeRemaining === 0}
                       placeholder={
                         currentQuestion.questionType === 'number' ? t('numberPlaceholder') : t('textPlaceholder')
                       }
-                      className={`flex-1 bg-white/10 border-2 border-white/20 rounded-2xl px-6 py-5 text-xl font-bold text-white placeholder:text-white/20 focus:outline-none focus:ring-4 focus:ring-purple-500/50 transition-all ${
+                      className={`w-full bg-white/10 border-2 border-white/20 rounded-2xl px-6 py-5 text-xl font-bold text-white placeholder:text-white/20 focus:outline-none focus:ring-4 focus:ring-purple-500/50 transition-all ${
                         currentQuestion.correctAnswer &&
                         selectedAnswer.toLowerCase().trim() === currentQuestion.correctAnswer.toLowerCase().trim()
                           ? 'border-green-500 bg-green-500/10'
@@ -287,16 +300,16 @@ export default function QuestionScreen({
                       }`}
                     />
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => onSubmitAnswer(selectedAnswer)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
                       disabled={hasAnswered || timeRemaining === 0 || !selectedAnswer.trim()}
-                      className="bg-purple-500 text-white font-black px-8 rounded-2xl hover:bg-purple-400 transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-purple-500/20 cursor-pointer"
+                      className="w-full bg-purple-500 text-white font-black px-8 py-5 rounded-2xl hover:bg-purple-400 transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-lg shadow-purple-500/20 cursor-pointer"
                     >
                       <Send size={20} />
                       {t('submitAnswer').toUpperCase()}
                     </motion.button>
-                  </div>
+                  </form>
                   <AnimatePresence>
                     {currentQuestion.correctAnswer && (
                       <motion.div

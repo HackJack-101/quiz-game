@@ -41,3 +41,5 @@ When a task is done, check the checkbox associated.
 - [x] Display vertically the quiz list on the master quiz page
 - [x] Fix responsiveness of the delete button in the quiz list
 - [x] Fix true/false question bug where "true" answer was incorrectly handled or displayed
+- [x] Change the position of the send button on number and exact text question to be below the input field for better vertical responsiveness
+- [x] Support Enter key to submit answers for number and free text questions
