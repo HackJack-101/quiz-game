@@ -19,8 +19,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Set NODE_ENV to production for the build
+ENV NODE_ENV=production
 # Disable Next.js telemetry during build
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
 
@@ -29,9 +31,9 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 # Disable Next.js telemetry during runtime
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Install gosu for dropping privileges in entrypoint (su-exec is Alpine-only, gosu is for Debian)
 RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
@@ -70,9 +72,11 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 # set hostname to localhost
-ENV HOSTNAME "0.0.0.0"
+ENV HOSTNAME="0.0.0.0"
+# Set HOME to a writable directory for Next.js cache
+ENV HOME=/tmp
 
 # Healthcheck using the /api/health endpoint
 # We use node to perform the check to avoid adding extra dependencies like curl

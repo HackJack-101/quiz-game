@@ -1,10 +1,19 @@
 import type { NextConfig } from 'next';
-import createNextIntlPlugin from 'next-intl/plugin';
-
-const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+import path from 'path';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  outputFileTracingIncludes: {
+    '**/*': [
+      './node_modules/{socket.io,@socket.io,engine.io}*/**/*',
+      './node_modules/{accepts,base64id,cors,debug,mime-types,mime-db,negotiator,ms,cookie,ws,vary,object-assign}/**/*',
+      './node_modules/{next,next-intl,better-sqlite3}/**/*',
+      './node_modules/{browserslist,caniuse-lite,baseline-browser-mapping}/**/*',
+    ],
+  },
+  turbopack: {
+    root: path.resolve(process.cwd()),
+  },
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;
