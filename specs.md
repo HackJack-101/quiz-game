@@ -115,10 +115,15 @@ The application uses a local `quiz.db` file with the following tables:
   - `/stats`: Global statistics for the application.
 - **Scoring**: Implemented in `calculateScore` and `findClosestNumberAnswer` within `lib/db-utils.ts`.
 
-## 8. Deployment
+### 8. Deployment & CI/CD
 
 - **Docker**: The application is containerized using a multi-stage `Dockerfile` and can be managed with `docker-compose.yml`.
 - **Base Image**: The application image is available on GitHub Container Registry (`ghcr.io/hackjack-101/quiz-game`).
+- **CI/CD**: A GitHub Actions workflow (`ci.yml`) automatically:
+  - Runs linting and tests.
+  - Verifies the Next.js build.
+  - Builds and publishes the Docker image to GHCR upon pushing to the `main` branch.
+  - Builds and publishes the Docker image with a version tag (e.g., `1.0.0`) when a corresponding Git tag (e.g., `v1.0.0`) is created.
 - **Persistence**: The SQLite database is persisted using a Docker volume.
 - **Security**: Runs as a non-root user (`nextjs`).
 - **Healthcheck**: Periodically checks `/api/health` to ensure the application is responsive, both in the Dockerfile and Docker Compose.
