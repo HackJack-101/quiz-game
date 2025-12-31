@@ -46,3 +46,4 @@ When a task is done, check the checkbox associated.
 - [x] Fix the npm run build
 - [x] Use websocket to communicate instead of recurrent http calls during a game
 - [x] Fix missing `mime-types` dependency in Docker image
+- [x] Generate a docker-compose for local use

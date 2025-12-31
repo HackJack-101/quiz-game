@@ -70,18 +70,49 @@ A real-time, interactive quiz game application built with Next.js, TypeScript, a
 
 ## 🐳 Docker
 
-### Docker Compose (Recommended)
+### Docker Compose for Production (Recommended)
 
-The easiest way to run the application is using Docker Compose:
+The easiest way to run the application in production is using Docker Compose:
 
 ```bash
 docker compose up -d
 ```
 
-This will pull the image from GHCR and start the application on port 3000. The SQLite database is persisted using a Docker volume named `quiz_data`.
+This will pull the pre-built image from GHCR and start the application on port 3000. The SQLite database is persisted using a Docker volume named `quiz_data`.
 
 > [!IMPORTANT]
 > If you encounter permission issues with the database volume (e.g., `SQLITE_CANTOPEN`), ensure the volume is writable by the non-root user (UID 1001). The provided `docker-compose.yml` includes `user: "1001:1001"` to help with this. If problems persist, you might need to run `chown -R 1001:1001 /path/to/your/volume` on the host.
+
+### Docker Compose for Local Development
+
+For local development and testing, use the `docker-compose.local.yml` file which builds the image locally:
+
+```bash
+docker compose -f docker-compose.local.yml up -d
+```
+
+This will:
+- Build the Docker image from the local Dockerfile
+- Use a separate volume (`quiz_data_local`) to avoid conflicts with production data
+- Start the application on port 3000
+
+To rebuild the image after code changes:
+
+```bash
+docker compose -f docker-compose.local.yml up -d --build
+```
+
+To stop and remove the local container:
+
+```bash
+docker compose -f docker-compose.local.yml down
+```
+
+To also remove the local data volume:
+
+```bash
+docker compose -f docker-compose.local.yml down -v
+```
 
 ### Manual Docker Build
 
