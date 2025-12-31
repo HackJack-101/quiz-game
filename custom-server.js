@@ -1,17 +1,44 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { createServer } = require('http');
 const { parse } = require('url');
-const next = require('next');
 const { Server } = require('socket.io');
 
 const dev = process.env.NODE_ENV !== 'production';
-const hostname = '0.0.0.0';
+const hostname = process.env.HOSTNAME || '0.0.0.0';
 const port = parseInt(process.env.PORT || '3000', 10);
 
-const app = next({ dev, hostname, port });
-const handle = app.getRequestHandler();
+let app;
+let handle;
 
-app.prepare().then(() => {
+if (dev) {
+  // Development mode: use next() as before
+  const next = require('next');
+  app = next({ dev, hostname, port });
+  handle = app.getRequestHandler();
+} else {
+  // Production mode with standalone output: use the standalone server
+  // The standalone server is already built and ready to use
+  const NextServer = require('next/dist/server/next-server').default;
+
+  process.env.NODE_ENV = 'production';
+  process.chdir(__dirname);
+
+  const nextConfig = require('./.next/required-server-files.json').config;
+
+  app = new NextServer({
+    hostname,
+    port,
+    dir: __dirname,
+    dev: false,
+    conf: nextConfig,
+  });
+
+  handle = app.getRequestHandler();
+}
+
+const prepareServer = dev ? app.prepare() : Promise.resolve();
+
+prepareServer.then(() => {
   const httpServer = createServer(async (req, res) => {
     try {
       const parsedUrl = parse(req.url, true);
