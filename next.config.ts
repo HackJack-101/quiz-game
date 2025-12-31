@@ -17,6 +17,37 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(process.cwd()),
   },
+  async headers() {
+    return [
+      {
+        // Prevent caching of HTML pages to avoid stale chunk references
+        source: '/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'accept',
+            value: '(.*text/html.*)',
+          },
+        ],
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
+      {
+        // Long-term caching for static assets with hashed filenames
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
