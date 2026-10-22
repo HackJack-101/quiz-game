@@ -1,5 +1,5 @@
 # Use AWS ECR Public Node image to avoid Docker Hub rate limits
-FROM public.ecr.aws/docker/library/node:24-slim AS base
+FROM public.ecr.aws/docker/library/node:24.22.1-slim AS base
 
 # 1. Install dependencies only when needed
 FROM base AS deps
