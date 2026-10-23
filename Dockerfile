@@ -1,5 +1,11 @@
-# Official Node image from Docker Hub (CI logs in to avoid anonymous pull rate limits)
-FROM node:24.22.1-slim AS base
+# Official Node image from Docker Hub (CI logs in to avoid anonymous pull rate limits):
+# the newest Node.js 24 release.
+ARG NODE_VERSION=24-slim
+# Oldest Node allowed: 24.22.1 ships NSS 3.131.1, the fix for CVE-2026-111943.
+# The floating tag above still picks up newer releases; this only sets a floor.
+ARG NODE_MIN_VERSION=24.22.1
+
+FROM node:${NODE_VERSION} AS base
 
 # 1. Install dependencies only when needed
 FROM base AS deps
@@ -27,6 +33,11 @@ RUN npm run build
 
 # 3. Production image, copy all the files and run next
 FROM base AS runner
+ARG NODE_MIN_VERSION
+RUN node -e 'const [a, b] = [process.versions.node, process.argv[1]].map((v) => v.split(".").map(Number)); \
+  const older = a.findIndex((n, i) => n !== b[i]); \
+  if (older !== -1 && a[older] < b[older]) { console.error(`Node ${process.versions.node} is older than ${process.argv[1]}`); process.exit(1); }' \
+  "$NODE_MIN_VERSION"
 WORKDIR /app
 
 ENV NODE_ENV production
