@@ -109,14 +109,37 @@ The following environment variables can be used to configure the application:
 
 ## 🚀 CI/CD
 
-This project uses GitHub Actions for Continuous Integration and Continuous Deployment.
-The workflow is defined in `.github/workflows/ci.yml` and includes:
+| Event                                  | Workflow        | Runs                                                                                                                                       |
+| -------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pull request                           | `ci.yml`        | ESLint, Prettier check, Jest tests and the production build of the Next.js application.                                                    |
+| Pull request changing the `Dockerfile` | `docker-pr.yml` | A Docker build of the image, to catch errors before merging. The image is not pushed.                                                      |
+| Push to `main`                         | `ci.yml`        | The same checks, then the image pushed to GHCR as `latest` and `sha-<commit>`. Docs-only changes skip it.                                  |
+| Published release (tag `v1.2.0`)       | `release.yml`   | Image tagged `1.2.0`, `1.2`, `stable` and `sha-<commit>`, then the Portainer deploy. No tests: the commit passed them on its pull request. |
+| Published pre-release (`v1.3.0-rc.1`)  | `release.yml`   | Image tagged `1.3.0-rc.1` and `sha-<commit>` only: no `stable`, no deploy.                                                                 |
 
-- Linting with ESLint
-- Formatting check with Prettier
-- Unit and Integration tests with Jest
-- Production build of the Next.js application
-- Docker image build and push to GitHub Container Registry (GHCR)
+Release tags must be semver (`v1.2.0` or `1.2.0`). Pushing a tag alone builds nothing; publish a release from it.
+
+### Deploying releases to Portainer
+
+The `deploy` job calls the stack's Portainer webhook (Portainer Business Edition; the free 3-node licence is enough) with `?QUIZ_VERSION=<version>`. Portainer pulls the image and redeploys the stack; the job then polls `APP_URL/api/health` until it reports the new version, and fails after 10 minutes otherwise.
+
+1. In Portainer, open the stack's **Editor** and set the app image to:
+   ```yaml
+   image: ghcr.io/hackjack-101/quiz-game:${QUIZ_VERSION:-stable}
+   ```
+   Remove `QUIZ_VERSION` from the stack's environment variables, so the value sent by the webhook is the one used. A manual redeploy without it runs `stable`, the latest release.
+2. Still in the **Editor**, turn on **Create a Stack webhook** and copy its URL.
+3. In GitHub, open **Settings** → **Environments** → **New environment** and name it `production`. Optionally add yourself as a required reviewer to approve each deploy.
+4. In that environment, add:
+
+   | Name                    | Kind     | Value                                                                                          |
+   | ----------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+   | `PORTAINER_WEBHOOK_URL` | secret   | The webhook URL. Anyone who has it can redeploy the stack.                                     |
+   | `APP_URL`               | variable | The app's public URL, such as `https://quiz.example.com` (optional: enables the version check) |
+
+If a proxy puts basic auth in front of Portainer, exempt `/api/stacks/webhooks/` from it: the webhook's id is its secret.
+
+To roll back, re-run the `deploy` job of an earlier release.
 
 ## 🧪 Testing
 
