@@ -84,6 +84,11 @@ ENV PORT 3000
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
+# Set by CI: the release version (or branch) and commit, reported by /api/health.
+ARG APP_VERSION=dev
+ARG APP_COMMIT=
+ENV APP_VERSION=${APP_VERSION} APP_COMMIT=${APP_COMMIT}
+
 # Healthcheck using the /api/health endpoint
 # We use node to perform the check to avoid adding extra dependencies like curl
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \

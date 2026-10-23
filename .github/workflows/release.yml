@@ -1,0 +1,102 @@
+name: Release
+
+# A published release builds its version (and `stable`), then deploys it to Portainer.
+# No tests here: the released commit already passed them on its pull request and on main.
+on:
+  release:
+    types: [published]
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=stable,enable=${{ !github.event.release.prerelease }}
+            type=sha,format=short
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            APP_VERSION=${{ steps.meta.outputs.version }}
+            APP_COMMIT=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Portainer
+    needs: docker
+    # Pre-releases get an image but aren't deployed.
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: ${{ vars.APP_URL }}
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      # The stack webhook (Portainer Business Edition) pulls and redeploys. QUIZ_VERSION
+      # reaches the stack file, whose image is ghcr.io/…/quiz-game:${QUIZ_VERSION:-stable}.
+      - name: Trigger the Portainer webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+          VERSION: ${{ needs.docker.outputs.version }}
+        run: |
+          : "${WEBHOOK_URL:?Set the PORTAINER_WEBHOOK_URL secret}"
+          [[ "$WEBHOOK_URL" == *\?* ]] && sep="&" || sep="?"
+          curl -sS --fail-with-body --max-time 60 -X POST "${WEBHOOK_URL}${sep}QUIZ_VERSION=${VERSION}"
+      # The webhook returns before the redeploy ends: wait for the app to report the new version.
+      - name: Wait for the new version
+        if: vars.APP_URL != ''
+        env:
+          HEALTH_URL: ${{ vars.APP_URL }}/api/health
+          EXPECTED: ${{ needs.docker.outputs.version }}
+        run: |
+          for _ in $(seq 60); do
+            running="$(curl -sS --max-time 10 "$HEALTH_URL" | jq -r '.version // empty' 2>/dev/null || true)"
+            if [[ "$running" == "$EXPECTED" ]]; then echo "Running $running"; exit 0; fi
+            sleep 10
+          done
+          echo "::error::Still running ${running:-an unknown version} after 10 minutes, expected $EXPECTED"
+          exit 1

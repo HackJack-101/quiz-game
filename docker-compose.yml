@@ -1,6 +1,7 @@
 services:
   app:
-    image: ghcr.io/hackjack-101/quiz-game:latest
+    # QUIZ_VERSION: a release (1.2.0), `stable` (the latest release) or `latest` (main).
+    image: ghcr.io/hackjack-101/quiz-game:${QUIZ_VERSION:-latest}
     pull_policy: always
     container_name: quiz-game
     # Note: We don't set user here because the entrypoint script runs as root
